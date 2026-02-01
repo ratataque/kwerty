@@ -1,0 +1,54 @@
+---
+title: "Linux (Arch/Hyprland)"
+description: "ratataque's Arch Linux setup with Hyprland, waybar, and xremap"
+category: "platforms"
+tool: "linux"
+contributors: ["ratataque"]
+repos: ["ratataque/.dotfiles"]
+platforms: ["linux"]
+tags: ["platform", "arch", "hyprland"]
+---
+
+## Overview
+
+ratataque's primary platform is Arch Linux with Hyprland as the Wayland compositor. The entire desktop is keyboard-driven with no mouse needed for daily development work.
+
+## Stack
+
+| Layer | Tool |
+|-------|------|
+| OS | Arch Linux (rolling release) |
+| Display server | Wayland |
+| Compositor/WM | Hyprland |
+| Status bar | quickshell / waybar |
+| Terminal | Kitty |
+| Shell | Fish + Starship |
+| Multiplexer | tmux |
+| Editor | Neovim |
+| Launcher | rofi |
+| File manager | yazi |
+| Key remapping | xremap |
+| Git | lazygit |
+
+## Installation
+
+Arch is installed via `archinstall` with minimal packages, then configured via the `.dotfiles` repo using GNU Stow for symlink management:
+
+```bash
+# Clone dotfiles
+git clone https://github.com/ratataque/.dotfiles ~/.dotfiles
+
+# Symlink all configs
+cd ~/.dotfiles
+stow fish kitty tmux hypr nvim lazygit rofi yazi starship xremap
+```
+
+## Key Remapping Chain
+
+1. **Keyboard firmware (ZMK)**: Hardware-level key positions and layers
+2. **xremap**: System-level CapsLock → Esc/Ctrl, Ctrl+HJKL → arrows
+3. **Hyprland**: Window management keybindings (SUPER+...)
+4. **tmux**: Session/pane navigation (prefix + ...)
+5. **Neovim**: Editor keybindings (leader + ...)
+
+Each layer handles its own domain without conflicts.

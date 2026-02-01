@@ -1,0 +1,91 @@
+---
+title: "Kitty Terminal"
+description: "GPU-accelerated terminal emulator with ligature support and image rendering"
+category: "terminal"
+tool: "kitty"
+contributors: ["ratataque", "GrimalDev"]
+repos: ["ratataque/.dotfiles", "GrimalDev/dotfiles"]
+configPath: "kitty/kitty.conf"
+platforms: ["linux", "macos"]
+tags: ["terminal", "gpu"]
+---
+
+## Overview
+
+Kitty is a GPU-accelerated terminal emulator focused on performance and features. Both ratataque and GrimalDev use it as their primary terminal, configured with Catppuccin Mocha and JetBrains Mono.
+
+## Key Configuration
+
+```conf
+# Font
+font_family      JetBrains Mono
+bold_font        JetBrains Mono Bold
+italic_font      JetBrains Mono Italic
+font_size        12.0
+
+# Window
+window_padding_width  8
+hide_window_decorations yes
+background_opacity    0.95
+
+# Performance
+repaint_delay    6
+input_delay      1
+sync_to_monitor  yes
+```
+
+## Catppuccin Theme
+
+```conf
+# Catppuccin Mocha colors
+foreground           #CDD6F4
+background           #1E1E2E
+selection_foreground #1E1E2E
+selection_background #F5E0DC
+
+# Black
+color0  #45475A
+color8  #585B70
+# Red
+color1  #F38BA8
+color9  #F38BA8
+# Green
+color2  #A6E3A1
+color10 #A6E3A1
+# Yellow
+color3  #F9E2AF
+color11 #F9E2AF
+# Blue
+color4  #89B4FA
+color12 #89B4FA
+# Magenta
+color5  #F5C2E7
+color13 #F5C2E7
+# Cyan
+color6  #94E2D5
+color14 #94E2D5
+# White
+color7  #BAC2DE
+color15 #A6ADC8
+```
+
+## Keybindings
+
+Kitty uses `ctrl+shift` as the default modifier for its own keybindings. Custom bindings are added for tmux integration:
+
+```conf
+# Tabs
+map ctrl+shift+t new_tab
+map ctrl+shift+right next_tab
+map ctrl+shift+left previous_tab
+
+# Scrollback
+map ctrl+shift+k scroll_line_up
+map ctrl+shift+j scroll_line_down
+map ctrl+shift+u scroll_page_up
+map ctrl+shift+d scroll_page_down
+```
+
+## Platform Notes
+
+On Linux, kitty integrates with Hyprland window rules for per-workspace opacity. On macOS, the `hide_window_decorations` setting removes the native title bar while keeping window management via yabai.

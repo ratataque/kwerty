@@ -1,0 +1,56 @@
+---
+title: "Corne (CRKBD)"
+description: "3x6+3 split columnar stagger keyboard used by both contributors"
+category: "keyboards"
+tool: "corne"
+contributors: ["ratataque", "GrimalDev"]
+repos: ["ratataque/zmk-config", "GrimalDev/zmk-config"]
+platforms: ["linux", "macos"]
+tags: ["keyboard", "split", "zmk", "ergonomic"]
+---
+
+## Overview
+
+The Corne (CRKBD) is the primary keyboard for both ratataque and GrimalDev. It's a 42-key split columnar stagger board running ZMK firmware. The minimal key count forces efficient use of layers.
+
+## Why Corne?
+
+- **42 keys** forces intentional layer design
+- **Columnar stagger** reduces finger travel
+- **Split** allows natural shoulder width
+- **Thumb clusters** replace pinky-heavy modifiers
+- **Portable** -- easy to carry between setups
+
+## ratataque's Layout
+
+Three layers: QWERTY base, symbols, and navigation. The firmware also includes a Colemak layer for experimentation.
+
+Key features:
+- Home row mods (disabled currently in favor of dedicated modifier keys)
+- Symbol layer on left thumb hold
+- Nav layer on right thumb hold
+- Numbers on the top row of nav layer
+- French accent layer (é, è, ê, à, ù, ç)
+- Custom Rust firmware for additional features
+- Slightly different thumb cluster assignments
+
+## Firmware
+
+Both contributors use ZMK firmware built via GitHub Actions. Push to the zmk-config repo triggers a build that produces a `.uf2` file ready to flash.
+
+```yaml
+# ZMK build matrix (west.yml)
+include:
+  - board: nice_nano_v2
+    shield: corne_left
+  - board: nice_nano_v2
+    shield: corne_right
+```
+
+## Build
+
+The physical keyboard uses:
+- **MCU**: nice!nano v2 (nRF52840)
+- **Switches**: Varies (both use tactile)
+- **Keycaps**: MT3 or DSA profile
+- **Case**: 3D printed or FR4 plate

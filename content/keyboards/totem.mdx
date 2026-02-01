@@ -1,0 +1,50 @@
+---
+title: "TOTEM"
+description: "38-key split keyboard with aggressive columnar stagger"
+category: "keyboards"
+tool: "totem"
+contributors: ["ratataque"]
+repos: ["ratataque/zmk-config-totem"]
+platforms: ["linux"]
+tags: ["keyboard", "split", "zmk", "ergonomic"]
+---
+
+## Overview
+
+The TOTEM is ratataque's more aggressive split keyboard with only 38 keys. The reduced key count compared to Corne (42 keys) eliminates the outer pinky columns entirely, forcing even more layer usage but reducing finger travel.
+
+## Layout Philosophy
+
+With 38 keys, every key must earn its position:
+- **Base layer**: Alpha keys only, no dedicated number row
+- **Nav layer**: Arrow keys, home/end, page up/down on the right hand
+- **Sym layer**: Numbers and symbols
+- **Thumb keys**: Space, backspace, enter on thumbs with layer-tap for layer activation
+
+## Physical Build
+
+- **Keys**: 3x5 + 3 thumbs per side (38 total)
+- **Stagger**: More aggressive column stagger than Corne
+- **Profile**: Low-profile with choc switches
+- **MCU**: nice!nano v2
+- **Firmware**: ZMK
+
+## Key Features
+
+```
+# ZMK behaviors used
+- &mt: mod-tap (tap for key, hold for modifier)
+- &lt: layer-tap (tap for key, hold for layer)
+- &kp: simple keypress
+- &caps_word: smart caps lock (auto-disables after word)
+```
+
+## Compared to Corne
+
+| Feature | Corne | TOTEM |
+|---------|-------|-------|
+| Keys | 42 | 38 |
+| Pinky columns | 2 per side | 1 per side |
+| Stagger | Moderate | Aggressive |
+| Number row | Via layer | Via layer |
+| Profile | MX compatible | Choc low-profile |

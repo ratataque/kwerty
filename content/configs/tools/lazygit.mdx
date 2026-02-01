@@ -1,0 +1,65 @@
+---
+title: "lazygit"
+description: "Terminal UI for git with keyboard-driven staging, committing, and rebasing"
+category: "tools"
+tool: "lazygit"
+contributors: ["ratataque", "GrimalDev"]
+repos: ["ratataque/.dotfiles", "GrimalDev/dotfiles"]
+configPath: "lazygit/config.yml"
+platforms: ["linux", "macos"]
+tags: ["tools", "git"]
+---
+
+## Overview
+
+lazygit replaces most git CLI interactions with a visual TUI. Stage hunks, interactive rebase, cherry-pick, and resolve conflicts -- all without leaving the terminal.
+
+## Configuration
+
+```yaml
+# lazygit config.yml
+gui:
+  theme:
+    activeBorderColor:
+      - "#a6e3a1"
+      - "bold"
+    inactiveBorderColor:
+      - "#45475a"
+    selectedLineBgColor:
+      - "#313244"
+    cherryPickedCommitBgColor:
+      - "#313244"
+    cherryPickedCommitFgColor:
+      - "#a6e3a1"
+  showIcons: true
+  nerdFontsVersion: "3"
+
+git:
+  paging:
+    colorArg: always
+    pager: delta --dark --paging=never
+  branchLogCmd: "git log --graph --color=always --abbrev-commit --decorate --date=relative --pretty=medium {{branchName}} --"
+
+os:
+  editPreset: "nvim"
+```
+
+## Keybindings
+
+lazygit uses vim-style navigation by default:
+
+| Key | Action |
+|-----|--------|
+| `j` / `k` | Navigate up/down |
+| `h` / `l` | Switch panels |
+| `space` | Stage/unstage file |
+| `c` | Commit |
+| `P` | Push |
+| `p` | Pull |
+| `r` | Rebase |
+| `s` | Squash |
+| `e` | Edit file |
+
+## Integration
+
+Launched from Neovim via `<leader>lg` keybinding, or from the terminal as `lg` (fish alias). Both contributors use delta as the pager for syntax-highlighted diffs.

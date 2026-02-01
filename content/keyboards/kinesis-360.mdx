@@ -1,0 +1,57 @@
+---
+title: "Kinesis Advantage 360 Pro"
+description: "Split concave ergonomic keyboard with ZMK firmware"
+category: "keyboards"
+tool: "kinesis-360"
+contributors: ["ratataque"]
+repos: ["ratataque/Adv360-Pro-ZMK"]
+platforms: ["linux"]
+tags: ["keyboard", "split", "zmk", "ergonomic", "concave"]
+---
+
+## Overview
+
+The Kinesis Advantage 360 Pro is ratataque's full-size ergonomic keyboard. Unlike the Corne and TOTEM which are flat split boards, the Kinesis uses concave key wells that match the natural curl of fingers.
+
+## Key Features
+
+- **Concave key wells**: Keys are arranged in a bowl shape matching finger curl
+- **Full key count**: Has number row, function keys, and dedicated modifier keys
+- **ZMK firmware**: The Pro model runs ZMK, allowing full customization
+- **Bluetooth**: Built-in wireless support
+- **Thumb clusters**: Large thumb clusters for modifiers and navigation
+
+## ZMK Configuration
+
+```c
+// Kinesis 360 Pro keymap (simplified)
+/ {
+    keymap {
+        compatible = "zmk,keymap";
+        default_layer {
+            bindings = <
+                &kp EQUAL &kp N1 &kp N2 &kp N3 &kp N4 &kp N5
+                &kp N6 &kp N7 &kp N8 &kp N9 &kp N0 &kp MINUS
+                &kp TAB &kp Q &kp W &kp E &kp R &kp T
+                &kp Y &kp U &kp I &kp O &kp P &kp BSLH
+                // ... additional rows
+            >;
+        };
+    };
+};
+```
+
+## Compared to Flat Splits
+
+| Feature | Kinesis 360 | Corne/TOTEM |
+|---------|-------------|-------------|
+| Form factor | Concave wells | Flat PCB |
+| Key count | ~76 | 38-42 |
+| Portability | Desk-bound | Highly portable |
+| Layer dependency | Low | High |
+| Learning curve | Moderate | Steep |
+| Price | Premium | Budget-friendly |
+
+## Use Case
+
+The Kinesis serves as the desk-bound daily driver when portability isn't needed. The concave wells are comfortable for long coding sessions, and the full key count means less layer switching than the Corne or TOTEM.

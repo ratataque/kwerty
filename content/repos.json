@@ -1,0 +1,128 @@
+[
+  {
+    "name": ".dotfiles",
+    "fullName": "ratataque/.dotfiles",
+    "contributor": "ratataque",
+    "description": "Fish, Hyprland, Kitty, lazygit, rofi, tmux, waybar, xremap, yazi, starship configs",
+    "language": "Shell",
+    "url": "https://github.com/ratataque/.dotfiles",
+    "contents": ["fish", "hyprland", "kitty", "lazygit", "rofi", "tmux", "waybar", "xremap", "yazi", "starship"]
+  },
+  {
+    "name": "neovim_config",
+    "fullName": "ratataque/neovim_config",
+    "contributor": "ratataque",
+    "description": "Full neovim setup: blink.cmp, telescope, treesitter, harpoon, leap, flash",
+    "language": "Lua",
+    "url": "https://github.com/ratataque/neovim_config",
+    "contents": ["neovim", "blink.cmp", "telescope", "treesitter", "harpoon", "leap", "flash"]
+  },
+  {
+    "name": "zmk-config",
+    "fullName": "ratataque/zmk-config",
+    "contributor": "ratataque",
+    "description": "Corne keyboard ZMK config (QWERTY + Colemak + symbol layers)",
+    "language": "C",
+    "url": "https://github.com/ratataque/zmk-config",
+    "contents": ["corne", "zmk", "qwerty", "colemak"]
+  },
+  {
+    "name": "zmk-config-totem",
+    "fullName": "ratataque/zmk-config-totem",
+    "contributor": "ratataque",
+    "description": "TOTEM split keyboard ZMK config",
+    "language": "C",
+    "url": "https://github.com/ratataque/zmk-config-totem",
+    "contents": ["totem", "zmk"]
+  },
+  {
+    "name": "Adv360-Pro-ZMK",
+    "fullName": "ratataque/Adv360-Pro-ZMK",
+    "contributor": "ratataque",
+    "description": "Kinesis Advantage 360 Pro ZMK configuration",
+    "language": "C",
+    "url": "https://github.com/ratataque/Adv360-Pro-ZMK",
+    "contents": ["kinesis-360", "zmk"]
+  },
+  {
+    "name": "quickshell",
+    "fullName": "ratataque/quickshell",
+    "contributor": "ratataque",
+    "description": "QML-based status bar for Hyprland",
+    "language": "QML",
+    "url": "https://github.com/ratataque/quickshell",
+    "contents": ["quickshell", "status-bar", "hyprland"]
+  },
+  {
+    "name": "esp8266-ch340g-flasher",
+    "fullName": "ratataque/esp8266-ch340g-flasher",
+    "contributor": "ratataque",
+    "description": "Rust keyboard firmware flasher for ESP8266",
+    "language": "Rust",
+    "url": "https://github.com/ratataque/esp8266-ch340g-flasher",
+    "contents": ["firmware", "esp8266", "rust"]
+  },
+  {
+    "name": "dotfiles",
+    "fullName": "GrimalDev/dotfiles",
+    "contributor": "GrimalDev",
+    "description": "Fish, Kitty, yabai, skhd, karabiner, tmux, lazygit, ranger, btop, fastfetch configs",
+    "language": "Shell",
+    "url": "https://github.com/GrimalDev/dotfiles",
+    "contents": ["fish", "kitty", "yabai", "skhd", "karabiner", "tmux", "lazygit", "ranger", "btop", "fastfetch"]
+  },
+  {
+    "name": "nvim-config",
+    "fullName": "GrimalDev/nvim-config",
+    "contributor": "GrimalDev",
+    "description": "NvChad-based neovim: avante, blink, conform, dap, telescope, octo",
+    "language": "Lua",
+    "url": "https://github.com/GrimalDev/nvim-config",
+    "contents": ["neovim", "nvchad", "avante", "blink", "conform", "dap", "telescope", "octo"]
+  },
+  {
+    "name": "zmk-config",
+    "fullName": "GrimalDev/zmk-config",
+    "contributor": "GrimalDev",
+    "description": "Corne keyboard ZMK config with French layout support",
+    "language": "C",
+    "url": "https://github.com/GrimalDev/zmk-config",
+    "contents": ["corne", "zmk", "french"]
+  },
+  {
+    "name": "rust-corne-firmware",
+    "fullName": "GrimalDev/rust-corne-firmware",
+    "contributor": "GrimalDev",
+    "description": "Custom Rust-based Corne keyboard firmware",
+    "language": "Rust",
+    "url": "https://github.com/GrimalDev/rust-corne-firmware",
+    "contents": ["corne", "rust", "firmware"]
+  },
+  {
+    "name": "avante.nvim",
+    "fullName": "GrimalDev/avante.nvim",
+    "contributor": "GrimalDev",
+    "description": "AI-powered neovim plugin (Cursor-like experience)",
+    "language": "Lua",
+    "url": "https://github.com/GrimalDev/avante.nvim",
+    "contents": ["neovim", "ai", "plugin"]
+  },
+  {
+    "name": "executor.nvim",
+    "fullName": "GrimalDev/executor.nvim",
+    "contributor": "GrimalDev",
+    "description": "Execute current file from neovim",
+    "language": "Lua",
+    "url": "https://github.com/GrimalDev/executor.nvim",
+    "contents": ["neovim", "plugin", "executor"]
+  },
+  {
+    "name": "sketchybar-app-font",
+    "fullName": "GrimalDev/sketchybar-app-font",
+    "contributor": "GrimalDev",
+    "description": "Custom macOS status bar font for sketchybar",
+    "language": "Python",
+    "url": "https://github.com/GrimalDev/sketchybar-app-font",
+    "contents": ["sketchybar", "font", "macos"]
+  }
+]

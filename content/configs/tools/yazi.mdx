@@ -1,0 +1,79 @@
+---
+title: "yazi"
+description: "Terminal file manager with vim keybindings and image preview"
+category: "tools"
+tool: "yazi"
+contributors: ["ratataque"]
+repos: ["ratataque/.dotfiles"]
+configPath: "yazi/yazi.toml"
+platforms: ["linux", "macos"]
+tags: ["tools", "filemanager"]
+---
+
+## Overview
+
+yazi is a blazing-fast terminal file manager written in Rust with image preview, bulk operations, and vim-style navigation. ratataque uses it as the primary file browser, replacing graphical file managers entirely.
+
+## Configuration
+
+```toml
+# yazi.toml
+[manager]
+sort_by = "natural"
+sort_sensitive = false
+sort_reverse = false
+sort_dir_first = true
+linemode = "size"
+show_hidden = true
+show_symlink = true
+
+[preview]
+tab_size = 2
+max_width = 600
+max_height = 900
+```
+
+## Keybindings
+
+```toml
+# keymap.toml
+[[manager.prepend_keymap]]
+on = ["<Enter>"]
+run = "open"
+desc = "Open the selected files"
+
+[[manager.prepend_keymap]]
+on = ["l"]
+run = "open"
+
+[[manager.prepend_keymap]]
+on = ["h"]
+run = "leave"
+
+[[manager.prepend_keymap]]
+on = ["g", "g"]
+run = "arrow -99999999"
+
+[[manager.prepend_keymap]]
+on = ["G"]
+run = "arrow 99999999"
+```
+
+## Theme
+
+```toml
+# theme.toml - Catppuccin Mocha
+[manager]
+cwd = { fg = "#89b4fa" }
+
+[status]
+separator_open = ""
+separator_close = ""
+separator_style = { fg = "#45475a", bg = "#1e1e2e" }
+mode_normal = { fg = "#1e1e2e", bg = "#a6e3a1", bold = true }
+mode_select = { fg = "#1e1e2e", bg = "#cba6f7", bold = true }
+```
+
+## File Preview
+
+yazi supports inline image preview in kitty terminal via the kitty graphics protocol. It also previews code with syntax highlighting, PDFs, archives, and videos.

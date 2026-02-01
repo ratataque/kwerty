@@ -1,0 +1,119 @@
+---
+title: "Neovim (ratataque)"
+description: "Full Neovim setup with telescope, treesitter, harpoon, leap, and flash"
+category: "editor"
+tool: "neovim"
+contributors: ["ratataque"]
+repos: ["ratataque/neovim_config"]
+configPath: "nvim/init.lua"
+platforms: ["linux"]
+tags: ["editor", "neovim", "lua"]
+---
+
+## Overview
+
+ratataque's Neovim config is a from-scratch Lua setup built around fast navigation and efficient editing. Key plugins include telescope for fuzzy finding, treesitter for syntax, harpoon for file marks, and leap/flash for motion.
+
+## Plugin Manager
+
+Uses lazy.nvim for plugin management with automatic lazy-loading:
+
+```lua
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git", "clone", "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+```
+
+## Core Settings
+
+```lua
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
+vim.opt.smartindent = true
+vim.opt.wrap = false
+vim.opt.swapfile = false
+vim.opt.backup = false
+vim.opt.undofile = true
+vim.opt.hlsearch = false
+vim.opt.incsearch = true
+vim.opt.termguicolors = true
+vim.opt.scrolloff = 8
+vim.opt.signcolumn = "yes"
+vim.opt.updatetime = 50
+```
+
+## Key Plugins
+
+### Telescope
+
+```lua
+{
+  "nvim-telescope/telescope.nvim",
+  dependencies = { "nvim-lua/plenary.nvim" },
+  keys = {
+    { "<leader>ff", "<cmd>Telescope find_files<cr>" },
+    { "<leader>fg", "<cmd>Telescope live_grep<cr>" },
+    { "<leader>fb", "<cmd>Telescope buffers<cr>" },
+    { "<leader>fh", "<cmd>Telescope help_tags<cr>" },
+  },
+}
+```
+
+### Harpoon
+
+```lua
+{
+  "ThePrimeagen/harpoon",
+  branch = "harpoon2",
+  keys = {
+    { "<leader>a", function() require("harpoon"):list():add() end },
+    { "<C-e>", function() require("harpoon").ui:toggle_quick_menu(require("harpoon"):list()) end },
+    { "<C-h>", function() require("harpoon"):list():select(1) end },
+    { "<C-t>", function() require("harpoon"):list():select(2) end },
+    { "<C-n>", function() require("harpoon"):list():select(3) end },
+    { "<C-s>", function() require("harpoon"):list():select(4) end },
+  },
+}
+```
+
+### Leap + Flash
+
+Motion plugins for fast cursor navigation:
+
+```lua
+-- Leap: s{char}{char} to jump
+{ "ggandor/leap.nvim", config = function() require("leap").add_default_mappings() end },
+-- Flash: enhanced f/t motions
+{ "folke/flash.nvim", event = "VeryLazy" },
+```
+
+### blink.cmp
+
+Completion engine with LSP integration:
+
+```lua
+{
+  "saghen/blink.cmp",
+  dependencies = { "rafamadriz/friendly-snippets" },
+  opts = {
+    keymap = { preset = "default" },
+    sources = { default = { "lsp", "path", "snippets", "buffer" } },
+  },
+}
+```
+
+## LSP Configuration
+
+Language servers are managed via mason.nvim with automatic installation for Lua, TypeScript, Rust, Python, and Go.

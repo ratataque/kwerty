@@ -1,0 +1,63 @@
+---
+title: "macOS (yabai/skhd)"
+description: "GrimalDev's macOS setup with yabai, skhd, karabiner, and sketchybar"
+category: "platforms"
+tool: "macos"
+contributors: ["GrimalDev"]
+repos: ["GrimalDev/dotfiles"]
+platforms: ["macos"]
+tags: ["platform", "macos", "yabai"]
+---
+
+## Overview
+
+GrimalDev's macOS workflow achieves near-parity with ratataque's Linux setup using yabai for tiling, skhd for keybindings, and karabiner for key remapping. The same muscle memory works across both platforms.
+
+## Stack
+
+| Layer | Tool |
+|-------|------|
+| OS | macOS |
+| WM | yabai |
+| Hotkeys | skhd |
+| Key remapping | Karabiner-Elements |
+| Status bar | sketchybar |
+| Terminal | Kitty |
+| Shell | Fish + Starship |
+| Multiplexer | tmux |
+| Editor | Neovim (NvChad) |
+| File manager | ranger |
+| Git | lazygit |
+
+## Setup
+
+```bash
+# Install Homebrew packages
+brew install yabai skhd karabiner-elements kitty fish tmux neovim lazygit
+
+# Start services
+yabai --start-service
+skhd --start-service
+
+# Clone dotfiles
+git clone https://github.com/GrimalDev/dotfiles ~/dotfiles
+```
+
+## macOS-Specific Considerations
+
+- **SIP**: System Integrity Protection must be partially disabled for yabai's space features
+- **Accessibility**: yabai and skhd need accessibility permissions
+- **Karabiner**: Runs as a kernel extension for low-level key remapping
+- **sketchybar**: Custom font for app icons (see sketchybar-app-font repo)
+
+## Cross-Platform Alignment
+
+The keybinding scheme is designed to match ratataque's Linux setup:
+
+| Action | Linux (Hyprland) | macOS (yabai/skhd) |
+|--------|-----------------|-------------------|
+| Focus left | `SUPER+H` | `ALT+H` |
+| Move window | `SUPER+SHIFT+H` | `ALT+SHIFT+H` |
+| Workspace 1 | `SUPER+1` | `ALT+1` |
+| Launch terminal | `SUPER+Return` | `ALT+Return` |
+| App launcher | `SUPER+D` (rofi) | `ALT+Space` (spotlight) |

@@ -1,0 +1,58 @@
+---
+title: "xremap"
+description: "Key remapping daemon for Linux with per-application rules"
+category: "wm"
+tool: "xremap"
+contributors: ["ratataque"]
+repos: ["ratataque/.dotfiles"]
+configPath: "xremap/config.yml"
+platforms: ["linux"]
+tags: ["wm", "keymapping"]
+---
+
+## Overview
+
+xremap is a key remapper for Linux (X11 and Wayland) that allows per-application keybinding overrides. ratataque uses it to create a consistent navigation layer across all applications.
+
+## Configuration
+
+```yaml
+# xremap config.yml
+modmap:
+  - name: CapsLock to Escape/Control
+    remap:
+      CapsLock:
+        held: leftctrl
+        alone: esc
+        alone_timeout_millis: 150
+
+keymap:
+  - name: Global navigation
+    remap:
+      # Ctrl+hjkl for arrow keys everywhere
+      C-h: left
+      C-j: down
+      C-k: up
+      C-l: right
+
+  - name: Emacs-style line navigation
+    remap:
+      C-a: home
+      C-e: end
+      C-d: delete
+
+  - name: Browser specific
+    application:
+      only: [firefox, chromium]
+    remap:
+      # Tab navigation
+      Alt-h: C-Shift-Tab
+      Alt-l: C-Tab
+      Alt-w: C-w
+```
+
+## Key Philosophy
+
+The most important remap is CapsLock → Escape (tap) / Control (hold). This puts Escape on the home row for vim and creates a more comfortable Control position for all shortcuts.
+
+The `C-hjkl` arrow keys provide vim-style navigation in every application without needing vim mode.

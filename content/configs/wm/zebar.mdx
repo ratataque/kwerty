@@ -1,0 +1,65 @@
+---
+title: "Zebar"
+description: "Customizable status bar for Windows with GlazeWM integration"
+category: "wm"
+tool: "zebar"
+contributors: ["ratataque", "GrimalDev"]
+repos: []
+configPath: "zebar/config.yaml"
+platforms: ["windows"]
+tags: ["wm", "statusbar", "windows"]
+---
+
+## Overview
+
+Zebar is the status bar companion for GlazeWM on Windows. It provides workspace indicators, system info, and time display with Catppuccin Mocha theming.
+
+## Configuration
+
+```yaml
+# Zebar config
+bar:
+  position: top
+  height: "28px"
+  background: "#1e1e2e"
+  foreground: "#cdd6f4"
+  font_family: "JetBrains Mono"
+  font_size: "12px"
+  border_bottom:
+    width: "1px"
+    color: "#45475a"
+
+  components_left:
+    - type: "workspaces"
+      active_style:
+        background: "#a6e3a1"
+        foreground: "#1e1e2e"
+        font_weight: "bold"
+        padding: "0 8px"
+        border_radius: "4px"
+      default_style:
+        foreground: "#6c7086"
+        padding: "0 8px"
+
+  components_center:
+    - type: "window_title"
+      style:
+        foreground: "#a6adc8"
+        max_length: 50
+
+  components_right:
+    - type: "cpu"
+      style:
+        foreground: "#89b4fa"
+    - type: "memory"
+      style:
+        foreground: "#cba6f7"
+    - type: "clock"
+      format: "%H:%M"
+      style:
+        foreground: "#a6e3a1"
+```
+
+## Cross-Platform Status Bars
+
+Zebar fills the same role as waybar/quickshell (Linux) and sketchybar (macOS) in the shared workflow, keeping a consistent tmux-like top bar across all three platforms.

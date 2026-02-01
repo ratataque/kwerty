@@ -1,0 +1,22 @@
+[
+  {
+    "name": "ratataque",
+    "github": "ratataque",
+    "platform": "Linux",
+    "os": "Arch Linux",
+    "wm": "Hyprland",
+    "editor": "Neovim",
+    "keyboard": "Corne / TOTEM / Kinesis 360 Pro",
+    "description": "Linux-first workflow built on Arch, Hyprland, and a collection of split ergo keyboards. Everything configured in Lua, Fish, and ZMK."
+  },
+  {
+    "name": "GrimalDev",
+    "github": "GrimalDev",
+    "platform": "macOS",
+    "os": "macOS",
+    "wm": "yabai",
+    "editor": "Neovim (NvChad)",
+    "keyboard": "Corne",
+    "description": "macOS workflow centered on yabai, skhd, and karabiner. Builds custom neovim plugins and Corne firmware in Rust."
+  }
+]

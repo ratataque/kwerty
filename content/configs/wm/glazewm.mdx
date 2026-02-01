@@ -1,0 +1,76 @@
+---
+title: "GlazeWM"
+description: "Tiling window manager for Windows with YAML configuration"
+category: "wm"
+tool: "glazewm"
+contributors: ["ratataque", "GrimalDev"]
+repos: []
+configPath: "glazewm/config.yaml"
+platforms: ["windows"]
+tags: ["wm", "tiling", "windows"]
+---
+
+## Overview
+
+GlazeWM brings tiling window management to Windows, filling the gap for users who work across Linux, macOS, and Windows. The YAML config mirrors the Hyprland/yabai keybinding philosophy.
+
+## Configuration
+
+```yaml
+# GlazeWM config.yaml
+general:
+  focus_follows_cursor: true
+  cursor_follows_focus: true
+
+gaps:
+  inner_gap: "8px"
+  outer_gap:
+    top: "8px"
+    right: "8px"
+    bottom: "8px"
+    left: "8px"
+
+bar:
+  enabled: false  # Using Zebar instead
+
+keybindings:
+  # Focus
+  - commands: ["focus --direction left"]
+    bindings: ["alt+h"]
+  - commands: ["focus --direction down"]
+    bindings: ["alt+j"]
+  - commands: ["focus --direction up"]
+    bindings: ["alt+k"]
+  - commands: ["focus --direction right"]
+    bindings: ["alt+l"]
+
+  # Move
+  - commands: ["move --direction left"]
+    bindings: ["alt+shift+h"]
+  - commands: ["move --direction down"]
+    bindings: ["alt+shift+j"]
+  - commands: ["move --direction up"]
+    bindings: ["alt+shift+k"]
+  - commands: ["move --direction right"]
+    bindings: ["alt+shift+l"]
+
+  # Workspaces
+  - commands: ["focus --workspace 1"]
+    bindings: ["alt+1"]
+  - commands: ["focus --workspace 2"]
+    bindings: ["alt+2"]
+  - commands: ["focus --workspace 3"]
+    bindings: ["alt+3"]
+
+  # Layout
+  - commands: ["toggle-fullscreen"]
+    bindings: ["alt+f"]
+  - commands: ["toggle-floating"]
+    bindings: ["alt+t"]
+  - commands: ["close"]
+    bindings: ["alt+q"]
+```
+
+## Paired with Zebar
+
+GlazeWM's built-in bar is disabled in favor of Zebar (see Zebar config) for a more customizable status bar with Catppuccin theming.

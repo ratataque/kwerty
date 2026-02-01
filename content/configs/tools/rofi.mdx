@@ -1,0 +1,92 @@
+---
+title: "rofi"
+description: "Application launcher and window switcher with fuzzy search"
+category: "tools"
+tool: "rofi"
+contributors: ["ratataque"]
+repos: ["ratataque/.dotfiles"]
+configPath: "rofi/config.rasi"
+platforms: ["linux"]
+tags: ["tools", "launcher"]
+---
+
+## Overview
+
+rofi is ratataque's application launcher on Hyprland. It provides fuzzy search for applications, window switching, and custom script modes.
+
+## Configuration
+
+```css
+/* config.rasi */
+configuration {
+    modi: "drun,run,window";
+    show-icons: true;
+    terminal: "kitty";
+    font: "JetBrains Mono 12";
+    display-drun: " Apps";
+    display-run: " Run";
+    display-window: " Windows";
+}
+
+* {
+    bg: #1e1e2e;
+    bg-alt: #313244;
+    fg: #cdd6f4;
+    fg-alt: #a6adc8;
+    accent: #a6e3a1;
+    border: #45475a;
+    selected: #313244;
+
+    background-color: @bg;
+    text-color: @fg;
+}
+
+window {
+    width: 600px;
+    border: 2px;
+    border-color: @border;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+inputbar {
+    children: [prompt, entry];
+    border: 0 0 1px 0;
+    border-color: @border;
+    padding: 8px;
+}
+
+prompt {
+    text-color: @accent;
+    padding: 0 8px 0 0;
+}
+
+entry {
+    placeholder: "Search...";
+    placeholder-color: @fg-alt;
+}
+
+listview {
+    lines: 8;
+    padding: 8px 0 0 0;
+    spacing: 4px;
+}
+
+element {
+    padding: 8px;
+    border-radius: 6px;
+}
+
+element selected {
+    background-color: @selected;
+    text-color: @accent;
+}
+```
+
+## Usage
+
+| Mode | Trigger | Description |
+|------|---------|-------------|
+| drun | `SUPER+SPACE` | Application launcher |
+| calc | `SUPER+C` | Calc |
+| paste-history | `SUPER+v` | paste histrory |

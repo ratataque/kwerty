@@ -1,0 +1,119 @@
+---
+title: "Neovim (GrimalDev)"
+description: "NvChad-based Neovim with avante, blink, conform, dap, and custom plugins"
+category: "editor"
+tool: "neovim"
+contributors: ["GrimalDev"]
+repos: ["GrimalDev/nvim-config", "GrimalDev/avante.nvim", "GrimalDev/executor.nvim"]
+configPath: "nvim/"
+platforms: ["macos"]
+tags: ["editor", "neovim", "nvchad", "lua"]
+---
+
+## Overview
+
+GrimalDev's Neovim is built on NvChad for a polished base, then extended with custom plugins including avante.nvim (AI-powered Cursor-like experience) and executor.nvim (run current file).
+
+## NvChad Base
+
+NvChad provides the foundation: statusline, tabufline, theme management, and a structured config layout. Custom overrides go in `lua/custom/`:
+
+```lua
+-- chadrc.lua
+local M = {}
+
+M.ui = {
+  theme = "catppuccin",
+  transparency = true,
+}
+
+M.plugins = "custom.plugins"
+M.mappings = require("custom.mappings")
+
+return M
+```
+
+## Custom Plugins
+
+### avante.nvim
+
+GrimalDev's fork of avante.nvim provides a Cursor-like AI experience inside Neovim:
+
+```lua
+{
+  "GrimalDev/avante.nvim",
+  event = "VeryLazy",
+  opts = {
+    provider = "openai",
+    openai = {
+      model = "gpt-4",
+    },
+  },
+}
+```
+
+### executor.nvim
+
+Run the current file with a single keypress:
+
+```lua
+{
+  "GrimalDev/executor.nvim",
+  keys = {
+    { "<leader>rr", "<cmd>ExecutorRun<cr>", desc = "Run current file" },
+    { "<leader>rv", "<cmd>ExecutorToggleDetail<cr>", desc = "Toggle output" },
+  },
+}
+```
+
+## DAP (Debug Adapter Protocol)
+
+```lua
+{
+  "mfussenegger/nvim-dap",
+  dependencies = {
+    "rcarriga/nvim-dap-ui",
+    "theHamsta/nvim-dap-virtual-text",
+  },
+  keys = {
+    { "<leader>db", "<cmd>DapToggleBreakpoint<cr>" },
+    { "<leader>dc", "<cmd>DapContinue<cr>" },
+    { "<leader>do", "<cmd>DapStepOver<cr>" },
+    { "<leader>di", "<cmd>DapStepInto<cr>" },
+  },
+}
+```
+
+## Conform (Formatting)
+
+```lua
+{
+  "stevearc/conform.nvim",
+  opts = {
+    formatters_by_ft = {
+      lua = { "stylua" },
+      javascript = { "prettier" },
+      typescript = { "prettier" },
+      python = { "black" },
+      rust = { "rustfmt" },
+    },
+    format_on_save = { timeout_ms = 500, lsp_fallback = true },
+  },
+}
+```
+
+## Octo (GitHub Integration)
+
+Review PRs, manage issues, and interact with GitHub directly from Neovim:
+
+```lua
+{
+  "pwntester/octo.nvim",
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+    "nvim-telescope/telescope.nvim",
+    "nvim-tree/nvim-web-devicons",
+  },
+  config = true,
+}
+```

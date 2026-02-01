@@ -1,0 +1,61 @@
+---
+title: "Windows (GlazeWM/WSL)"
+description: "Windows setup with GlazeWM, Zebar, and Arch WSL for development"
+category: "platforms"
+tool: "windows"
+contributors: ["ratataque", "GrimalDev"]
+repos: []
+platforms: ["windows"]
+tags: ["platform", "windows", "glazewm", "wsl"]
+---
+
+## Overview
+
+Windows is the third platform supported by both contributors. GlazeWM provides tiling window management, Zebar adds a status bar, and Arch WSL provides the full Linux terminal stack inside Windows.
+
+## Stack
+
+| Layer | Tool |
+|-------|------|
+| OS | Windows 11 |
+| WM | GlazeWM |
+| Status bar | Zebar |
+| Terminal | Windows Terminal / Kitty |
+| WSL | Arch Linux (WSL2) |
+| Shell (WSL) | Fish + Starship |
+| Multiplexer | tmux (inside WSL) |
+| Editor | Neovim (inside WSL) |
+
+## GlazeWM + Zebar
+
+GlazeWM handles window tiling with the same `ALT+HJKL` bindings used on macOS. Zebar provides the top status bar with Catppuccin theming.
+
+See the GlazeWM and Zebar config pages for details.
+
+## Arch WSL
+
+Development happens inside Arch WSL, which provides the identical terminal stack:
+
+```powershell
+# Install Arch WSL
+wsl --install -d Arch
+
+# Inside WSL, install the full stack
+sudo pacman -S fish neovim tmux lazygit yazi starship
+```
+
+Once inside WSL, the Fish/tmux/Neovim environment is identical to ratataque's native Arch setup. The dotfiles repo works unchanged.
+
+## Workflow
+
+1. **GlazeWM** manages Windows application windows
+2. **Windows Terminal** runs WSL instances
+3. **tmux** inside WSL manages terminal sessions
+4. **Neovim** inside tmux for editing
+5. All keyboard shortcuts maintain cross-platform consistency
+
+## Limitations
+
+- No xremap equivalent (Windows key remapping is more limited)
+- WSL filesystem performance is slower than native Linux
+- Some Hyprland-specific features (blur, animations) not available
