@@ -1,6 +1,7 @@
 import { AsciiArt } from "@/components/ui/ascii-art";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { BlobImage } from "@/components/ui/blob-image";
 import { HeroTerminal } from "./hero-terminal";
 
 const KWERTY_ASCII = `
@@ -38,16 +39,22 @@ const sections = [
 
 export default function Home() {
     return (
-        <div className="max-w-4xl mx-auto px-4 py-16">
+        <div className="max-w-7xl mx-auto px-4 py-16 flex flex-col items-center">
+            {/* Hero: Blob + ASCII/Terminal - blob below on mobile, left side on desktop */}
             <section
                 data-section
-                className="mb-16 text-center flex flex-col items-center"
+                className="mb-16 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 w-full"
             >
-                <AsciiArt
-                    art={KWERTY_ASCII}
-                    className="mb-6 mx-auto inline-block"
-                />
-                <HeroTerminal />
+                {/* Left: Blob image - below on mobile, left side on desktop */}
+                <div className="shrink-0 order-2 lg:order-1 lg:ml-12 ">
+                    <BlobImage src="/pro.jpg" alt="Keyboard Setup" />
+                </div>
+
+                {/* Right: ASCII art and terminal */}
+                <div className="flex flex-col items-center lg:items-start flex-1 w-full order-1 lg:order-2 lg:pl-12">
+                    <AsciiArt art={KWERTY_ASCII} className="mb-6" />
+                    <HeroTerminal />
+                </div>
             </section>
 
             <section data-section className="mb-16">
@@ -70,7 +77,7 @@ export default function Home() {
                 </div>
             </section>
 
-            <section data-section>
+            <section data-section className="w-[65%] min-w-fit">
                 <div className="border border-ctp-surface1 rounded-lg bg-ctp-mantle p-6 text-center">
                     <p className="text-sm text-ctp-overlay0 mb-2">
                         Two setups. Three platforms. One philosophy.
