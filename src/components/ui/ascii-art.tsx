@@ -11,7 +11,7 @@ export function AsciiArt({
 }: AsciiArtProps) {
   return (
     <pre
-      className={`font-mono text-xs sm:text-sm md:text-base leading-none select-none ${color} ${className}`}
+      className={`font-mono text-[0.5rem] xs:text-xs sm:text-sm md:text-base leading-none select-none ${color} ${className}`}
       style={{
         letterSpacing: '0',
         fontVariantLigatures: 'none',

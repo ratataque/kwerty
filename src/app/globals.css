@@ -1,6 +1,9 @@
 @import "tailwindcss";
 
 @theme {
+  /* Custom breakpoints */
+  --breakpoint-xs: 480px;
+
   /* Catppuccin Mocha */
   --color-ctp-rosewater: #f5e0dc;
   --color-ctp-flamingo: #f2cdcd;
