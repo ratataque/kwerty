@@ -21,6 +21,89 @@ The Corne (CRKBD) is the primary keyboard for both ratataque and GrimalDev. It's
 - **Thumb clusters** replace pinky-heavy modifiers
 - **Portable** -- easy to carry between setups
 
+## GrimalDev's Layout
+
+QWERTY base with custom hold-tap behaviors and French unicode support.
+
+### Hold-Tap Behaviors
+
+```c
+// Positional hold-tap for left/right ctrl
+/ {
+    behaviors {
+        left_ctrl: left_ctrl {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            hold-trigger-key-positions = <6 7 8 9 10 11 18 19 20 21 22 23 30 31 32 33 34 35 39 40 41>;
+            bindings = <&kp>, <&kp>;
+        };
+        right_ctrl: right_ctrl {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            hold-trigger-key-positions = <0 1 2 3 4 5 12 13 14 15 16 17 24 25 26 27 28 29 36 37 38>;
+            bindings = <&kp>, <&kp>;
+        };
+    };
+};
+```
+
+### Layers
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│ QWERTY (Base)                                                    │
+│ TAB  Q  W  E  R  T  │  Y  U  I  O  P  BSPC                    │
+│ ESC  A  S  D  F  G  │  H  J  K  L  ;  '                        │
+│ SHFT Z  X  C  V  B  │  N  M  ,  .  /  SHFT                    │
+│           GUI ALT L1 │ SPC L2 CTRL                              │
+├─────────────────────────────────────────────────────────────────┤
+│ Layer 1: Numbers & Symbols                                       │
+│  `   1  2  3  4  5  │  6  7  8  9  0  DEL                      │
+│  ~   !  @  #  $  %  │  ^  &  *  (  )  |                        │
+│ SHFT _  +  {  }  \  │  -  =  [  ]  /  SHFT                    │
+│           GUI ALT __ │ SPC __  CTRL                              │
+├─────────────────────────────────────────────────────────────────┤
+│ Layer 2: System / Media / BT                                     │
+│  F1  F2  F3  F4  F5  F6 │ F7  F8  F9  F10 F11 F12             │
+│ BT0 BT1 BT2 BT3 BT4 __ │ LFT DWN UP  RGT __  __              │
+│ BTCLR __ __ __ __ __     │ MUTE VOLD VOLU PREV NEXT PLAY       │
+│              GUI ALT __  │ SPC __  CTRL                          │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Combos
+
+```c
+// ctrl+h for backspace
+combo_bspc {
+    timeout-ms = <50>;
+    key-positions = <16 19>;  // F + H
+    bindings = <&kp BSPC>;
+};
+
+// ctrl+m for enter
+combo_enter {
+    timeout-ms = <50>;
+    key-positions = <16 31>;  // F + M
+    bindings = <&kp RET>;
+};
+```
+
+### French Unicode
+
+French characters are supported via ZMK includes for accented characters (é, è, ê, à, ù, ç).
+
+### Hardware
+
+- OLED display enabled
+- Battery proxy for split monitoring
+
 ## ratataque's Layout
 
 Three layers: QWERTY base, symbols, and navigation. The firmware also includes a Colemak layer for experimentation.
@@ -31,8 +114,6 @@ Key features:
 - Nav layer on right thumb hold
 - Numbers on the top row of nav layer
 - French accent layer (é, è, ê, à, ù, ç)
-- Custom Rust firmware for additional features
-- Slightly different thumb cluster assignments
 
 ## Firmware
 

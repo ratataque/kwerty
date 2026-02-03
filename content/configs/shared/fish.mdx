@@ -1,0 +1,108 @@
+---
+title: "Fish Shell"
+description: "User-friendly shell with autosuggestions, syntax highlighting, and sane defaults"
+category: "shared"
+tool: "fish"
+contributors: ["ratataque", "GrimalDev"]
+repos: ["ratataque/.dotfiles", "GrimalDev/dotfiles"]
+configPath: "fish/config.fish"
+platforms: ["linux", "macos"]
+tags: ["shell", "fish"]
+---
+
+## Overview
+
+Fish is the shell of choice for both contributors. Unlike bash/zsh, Fish works well out of the box with autosuggestions, syntax highlighting, and tab completions without plugins.
+
+## Core Config
+
+```fish
+# config.fish
+set -g fish_greeting ""
+set -gx XDG_CONFIG_HOME $HOME/.config
+set -gx EDITOR nvim
+set -gx VISUAL nvim
+
+# Vi key bindings
+fish_vi_key_bindings
+
+# Path
+fish_add_path /opt/homebrew/bin
+fish_add_path /opt/homebrew/sbin
+fish_add_path $HOME/.local/bin
+fish_add_path $HOME/.cargo/bin
+fish_add_path $HOME/go/bin
+fish_add_path $HOME/.bun/bin
+```
+
+## Aliases
+
+```fish
+alias vim="nvim"
+alias tree="exa --tree"
+alias ls="exa -a --icons --group-directories-first"
+alias ll="exa -la --icons --group-directories-first"
+alias cat="bat"
+alias icat="kitten icat"
+alias dots="cd ~/.config && nvim"
+alias ff="fastfetch"
+alias sc="source ~/.config/fish/config.fish"
+alias g="git"
+alias lg="lazygit"
+```
+
+## Functions
+
+Custom Fish functions for common operations:
+
+```fish
+# sudo.fish - re-run last command with sudo
+function sudo
+    if test (count $argv) -eq 0
+        command sudo $history[1]
+    else
+        command sudo $argv
+    end
+end
+
+# brew.fish - update, upgrade, cleanup
+function brew
+    if test (count $argv) -eq 0
+        command brew update && command brew upgrade && command brew cleanup
+    else
+        command brew $argv
+    end
+end
+
+# jqf.fish - interactive jq with fzf
+function jqf
+    echo '' | fzf --print-query --preview "cat $argv[1] | jq {q}"
+end
+
+# share.fish - create temp share via transfer.sh
+function share
+    curl --upload-file $argv[1] "https://transfer.sh/$argv[1]"
+end
+
+# mfzf.fish - man page fuzzy finder
+function mfzf
+    man -k . | fzf --prompt='Man> ' | awk '{print $1}' | xargs -r man
+end
+```
+
+## Shell Integrations
+
+```fish
+# fzf key bindings
+fzf --fish | source
+
+# zoxide (smart cd)
+zoxide init fish | source
+
+# Starship prompt
+starship init fish | source
+```
+
+## Prompt
+
+Both contributors use Starship prompt (see starship config) rather than Fish's built-in prompt.

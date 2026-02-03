@@ -17,9 +17,9 @@ const sections = [
     {
         title: "Configs",
         href: "/configs",
-        badge: "terminal" as const,
+        badge: "shared" as const,
         description:
-            "Terminal, editor, WM, and tool configurations refined over 4+ years",
+            "Environment-specific and shared configs refined over 4+ years",
     },
     {
         title: "Keyboards",

@@ -1,0 +1,157 @@
+---
+title: "AeroSpace"
+description: "Tiling window manager for macOS with i3-like keybindings and TOML config"
+category: "macos"
+tool: "aerospace"
+contributors: ["GrimalDev"]
+repos: ["GrimalDev/dotfiles"]
+configPath: "aerospace/aerospace.toml"
+platforms: ["macos"]
+tags: ["wm", "tiling", "macos"]
+---
+
+## Overview
+
+AeroSpace is GrimalDev's tiling window manager for macOS, replacing yabai. It uses TOML configuration, provides i3-like tiling with native macOS workspace integration, and pairs with sketchybar for status display and skhd for global key remapping.
+
+## Layout & Gaps
+
+```toml
+after-login-command = []
+after-startup-command = [
+  'exec-and-forget sketchybar',
+  'exec-and-forget skhd',
+  'exec-and-forget open -a "Notion"',
+  'exec-and-forget open -a "Zen"',
+  'exec-and-forget open -a "Music"',
+]
+
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+
+[gaps]
+inner.horizontal = 5
+inner.vertical = 5
+outer.top = 5
+outer.bottom = 5
+outer.right = 5
+outer.left = 55  # Space for sketchybar on main monitor
+```
+
+## Keybindings
+
+### Focus & Move
+
+```toml
+[mode.main.binding]
+# Focus: alt-cmd + hjkl
+alt-cmd-h = 'focus left'
+alt-cmd-j = 'focus down'
+alt-cmd-k = 'focus up'
+alt-cmd-l = 'focus right'
+
+# Move: shift-cmd + hjkl
+shift-cmd-h = 'move left'
+shift-cmd-j = 'move down'
+shift-cmd-k = 'move up'
+shift-cmd-l = 'move right'
+```
+
+### Resize
+
+```toml
+# Resize: ctrl-cmd + hjkl
+ctrl-cmd-h = 'resize width -50'
+ctrl-cmd-j = 'resize height +50'
+ctrl-cmd-k = 'resize height -50'
+ctrl-cmd-l = 'resize width +50'
+```
+
+### Workspaces
+
+```toml
+# Switch workspace: cmd + number
+cmd-1 = 'workspace 1'
+cmd-2 = 'workspace 2'
+cmd-3 = 'workspace 3'
+cmd-4 = 'workspace 4'
+cmd-5 = 'workspace 5'
+cmd-6 = 'workspace 6'
+cmd-7 = 'workspace 7'
+cmd-8 = 'workspace 8'
+cmd-9 = 'workspace 9'
+cmd-0 = 'workspace 10'
+
+# Move to workspace: shift-cmd + number
+shift-cmd-1 = 'move-node-to-workspace 1'
+shift-cmd-2 = 'move-node-to-workspace 2'
+shift-cmd-3 = 'move-node-to-workspace 3'
+shift-cmd-4 = 'move-node-to-workspace 4'
+shift-cmd-5 = 'move-node-to-workspace 5'
+shift-cmd-6 = 'move-node-to-workspace 6'
+shift-cmd-7 = 'move-node-to-workspace 7'
+shift-cmd-8 = 'move-node-to-workspace 8'
+shift-cmd-9 = 'move-node-to-workspace 9'
+shift-cmd-0 = 'move-node-to-workspace 10'
+```
+
+### Service Mode
+
+```toml
+# Enter service mode
+ctrl-alt-semicolon = 'mode service'
+
+[mode.service.binding]
+r = ['flatten-workspace-tree', 'mode main']
+f = ['layout floating tiling', 'mode main']
+backspace = ['close-all-windows-but-current', 'mode main']
+esc = 'mode main'
+```
+
+## Window Rules
+
+```toml
+# Assign to workspaces
+[[on-window-detected]]
+if.app-id = 'notion.id'
+run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
+if.app-id = 'app.zen-browser.zen'
+run = 'move-node-to-workspace 3'
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'kitty.*dev'
+run = 'move-node-to-workspace 4'
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'btop'
+run = 'move-node-to-workspace 5'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.Music'
+run = 'move-node-to-workspace 6'
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Equibop'
+run = 'move-node-to-workspace 9'
+
+# Floating rules
+[[on-window-detected]]
+if.app-id = 'com.apple.finder'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.1password.1password'
+run = 'layout floating'
+```
+
+## Sketchybar Integration
+
+```toml
+# Notify sketchybar on workspace change
+exec-on-workspace-change = [
+  '/bin/bash', '-c',
+  'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
+]
+```

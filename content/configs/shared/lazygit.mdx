@@ -1,7 +1,7 @@
 ---
 title: "lazygit"
 description: "Terminal UI for git with keyboard-driven staging, committing, and rebasing"
-category: "tools"
+category: "shared"
 tool: "lazygit"
 contributors: ["ratataque", "GrimalDev"]
 repos: ["ratataque/.dotfiles", "GrimalDev/dotfiles"]
@@ -14,10 +14,30 @@ tags: ["tools", "git"]
 
 lazygit replaces most git CLI interactions with a visual TUI. Stage hunks, interactive rebase, cherry-pick, and resolve conflicts -- all without leaving the terminal.
 
-## Configuration
+## GrimalDev's Configuration
 
 ```yaml
-# lazygit config.yml
+gui:
+  theme:
+    selectedLineBgColor:
+      - "black"
+    cherryPickedCommitBgColor:
+      - "black"
+  showIcons: true
+  nerdFontsVersion: "3"
+
+git:
+  paging:
+    colorArg: always
+    pager: ydiff -p cat -s --wrap
+
+os:
+  editPreset: "nvim"
+```
+
+## ratataque's Configuration
+
+```yaml
 gui:
   theme:
     activeBorderColor:
@@ -38,7 +58,6 @@ git:
   paging:
     colorArg: always
     pager: delta --dark --paging=never
-  branchLogCmd: "git log --graph --color=always --abbrev-commit --decorate --date=relative --pretty=medium {{branchName}} --"
 
 os:
   editPreset: "nvim"
@@ -62,4 +81,4 @@ lazygit uses vim-style navigation by default:
 
 ## Integration
 
-Launched from Neovim via `<leader>lg` keybinding, or from the terminal as `lg` (fish alias). Both contributors use delta as the pager for syntax-highlighted diffs.
+Launched from Neovim via `<leader>lg` keybinding, or from the terminal as `lg` (fish alias).

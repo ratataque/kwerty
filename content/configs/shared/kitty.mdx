@@ -1,0 +1,70 @@
+---
+title: "Kitty Terminal"
+description: "GPU-accelerated terminal emulator with ligature support and image rendering"
+category: "shared"
+tool: "kitty"
+contributors: ["ratataque", "GrimalDev"]
+repos: ["ratataque/.dotfiles", "GrimalDev/dotfiles"]
+configPath: "kitty/kitty.conf"
+platforms: ["linux", "macos"]
+tags: ["terminal", "gpu"]
+---
+
+## Overview
+
+Kitty is a GPU-accelerated terminal emulator focused on performance and features. Both ratataque and GrimalDev use it as their primary terminal. GrimalDev uses Everforest Dark Hard theming, ratataque uses Catppuccin Mocha.
+
+## GrimalDev's Configuration
+
+```conf
+# Theme
+include themes/everforest-dark-hard.conf
+
+# Font
+font_family      JetBrainsMono Nerd Font
+font_size        11
+
+# Window
+background_opacity    1
+background_blur       40
+cursor_trail          1
+hide_window_decorations titlebar-only
+window_padding_width  10
+
+# Shell & Editor
+shell fish
+editor nvim
+
+# macOS
+macos_option_as_alt yes
+
+# Keybindings
+map cmd+c copy_to_clipboard
+map cmd+v paste_from_clipboard
+map ctrl+shift+e no_op
+map ctrl+shift+r no_op
+```
+
+## ratataque's Configuration
+
+```conf
+# Font
+font_family      JetBrains Mono
+bold_font        JetBrains Mono Bold
+italic_font      JetBrains Mono Italic
+font_size        12.0
+
+# Window
+window_padding_width  8
+hide_window_decorations yes
+background_opacity    0.95
+
+# Performance
+repaint_delay    6
+input_delay      1
+sync_to_monitor  yes
+```
+
+## Platform Notes
+
+On Linux, kitty integrates with Hyprland window rules for per-workspace opacity. On macOS, `hide_window_decorations titlebar-only` removes the native title bar while keeping window management via AeroSpace.

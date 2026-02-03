@@ -1,0 +1,96 @@
+---
+title: "skhd"
+description: "Global key remapper for macOS with per-app ctrl-to-cmd and vim navigation"
+category: "macos"
+tool: "skhd"
+contributors: ["GrimalDev"]
+repos: ["GrimalDev/dotfiles"]
+configPath: "skhd/skhdrc"
+platforms: ["macos"]
+tags: ["wm", "keybindings", "macos"]
+---
+
+## Overview
+
+skhd is now used as a global key remapper rather than a yabai hotkey daemon. It provides per-app ctrl→cmd remapping (excluding kitty) so that Linux muscle memory works on macOS, vim-style navigation in non-terminal apps, and a few utility shortcuts.
+
+## Ctrl → Cmd Remapping
+
+These rules remap common ctrl shortcuts to their cmd equivalents in all apps except kitty (where ctrl shortcuts are native):
+
+```bash
+# skhdrc
+
+# ctrl-a → cmd-a (select all) — excluding kitty
+ctrl - a [
+  "kitty" ~
+  * : skhd -k "cmd - a"
+]
+
+# ctrl-c → cmd-c (copy)
+ctrl - c [
+  "kitty" ~
+  * : skhd -k "cmd - c"
+]
+
+# ctrl-v → cmd-v (paste)
+ctrl - v [
+  "kitty" ~
+  * : skhd -k "cmd - v"
+]
+
+# ctrl-z → cmd-z (undo)
+ctrl - z [
+  "kitty" ~
+  * : skhd -k "cmd - z"
+]
+```
+
+## Vim Navigation
+
+Arrow key emulation in non-kitty apps:
+
+```bash
+# ctrl-j → down, ctrl-k → up
+ctrl - j [
+  "kitty" ~
+  * : skhd -k "down"
+]
+
+ctrl - k [
+  "kitty" ~
+  * : skhd -k "up"
+]
+
+# alt-j → page down, alt-k → page up
+alt - j [
+  "kitty" ~
+  * : skhd -k "pagedown"
+]
+
+alt - k [
+  "kitty" ~
+  * : skhd -k "pageup"
+]
+```
+
+## Word Delete
+
+```bash
+# ctrl-w → alt-backspace (delete word)
+ctrl - w [
+  "kitty" ~
+  * : skhd -k "alt - backspace"
+]
+```
+
+## Utility
+
+```bash
+# Sleep: shift+alt+cmd-l
+shift + alt + cmd - l : pmset displaysleepnow
+```
+
+## Philosophy
+
+The keybindings make macOS feel like Linux by translating ctrl-based shortcuts to cmd-based ones. Kitty is excluded from all remaps since it handles its own terminal shortcuts natively. This works in tandem with Karabiner (which handles hardware-level remaps) and AeroSpace (which handles window management).

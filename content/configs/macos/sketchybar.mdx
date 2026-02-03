@@ -1,0 +1,153 @@
+---
+title: "Sketchybar"
+description: "Lua-based macOS status bar with AeroSpace workspace integration"
+category: "macos"
+tool: "sketchybar"
+contributors: ["GrimalDev"]
+repos: ["GrimalDev/dotfiles"]
+configPath: "sketchybar/"
+platforms: ["macos"]
+tags: ["wm", "statusbar", "macos"]
+---
+
+## Overview
+
+Sketchybar is a macOS status bar configured with Lua, based on logicsec/sketchybar with GrimalDev customizations. It integrates with AeroSpace for workspace indicators and provides system metrics, app info, and notifications.
+
+## Architecture
+
+```
+sketchybarrc (Lua entry point)
+  └── init.lua
+        ├── bar.lua          # Bar appearance
+        ├── default.lua      # Default item settings
+        └── items/
+              ├── aerospace.lua   # Workspace indicators
+              ├── front_app.lua   # Active app icon + name
+              ├── calendar.lua    # Date + time
+              └── widgets/
+                    ├── battery.lua
+                    ├── metrics.lua
+                    ├── volume.lua
+                    ├── wifi.lua
+                    └── notifications.lua
+```
+
+## Colors
+
+```lua
+-- colors.lua (dark theme)
+return {
+  bg = 0xff2b3339,
+  fg = 0xffd3c6aa,
+  green = 0xffa7c080,
+  red = 0xffe67e80,
+  blue = 0xff7fbbb3,
+  yellow = 0xffdbbc7f,
+  orange = 0xffe69875,
+  magenta = 0xffd699b6,
+  grey = 0xff7a8478,
+  transparent = 0x00000000,
+}
+```
+
+## Settings
+
+```lua
+-- settings.lua
+return {
+  font = "JetBrainsMono Nerd Font",
+  paddings = 4,
+}
+```
+
+## Bar
+
+```lua
+-- bar.lua
+sbar.bar({
+  position = "left",
+  height = 38,
+  color = colors.bg,
+  border_color = colors.grey,
+  corner_radius = 10,
+  blur_radius = 20,
+  y_offset = 4,
+  margin = 4,
+  padding_left = 8,
+  padding_right = 8,
+})
+```
+
+## AeroSpace Workspaces
+
+Dynamic workspace indicators that highlight the active workspace, driven by the `aerospace_workspace_change` event:
+
+```lua
+-- aerospace.lua
+local spaces = {}
+
+for i = 1, 10 do
+  spaces[i] = sbar.add("item", "space." .. i, {
+    icon = { string = i, color = colors.grey },
+    background = { color = colors.transparent },
+    click_script = "aerospace workspace " .. i,
+  })
+end
+
+sbar.add("event", "aerospace_workspace_change")
+
+for i, space in ipairs(spaces) do
+  space:subscribe("aerospace_workspace_change", function(env)
+    local is_active = env.FOCUSED_WORKSPACE == tostring(i)
+    space:set({
+      icon = { color = is_active and colors.green or colors.grey },
+      background = { color = is_active and colors.bg or colors.transparent },
+    })
+  end)
+end
+```
+
+## Items
+
+### Front App
+
+Displays the currently focused application icon and name:
+
+```lua
+-- front_app.lua
+local front_app = sbar.add("item", "front_app", {
+  icon = { font = { family = "sketchybar-app-font", size = 16 } },
+  label = { color = colors.fg },
+})
+
+front_app:subscribe("front_app_switched", function(env)
+  front_app:set({
+    icon = { string = app_icons[env.INFO] or "?" },
+    label = { string = env.INFO },
+  })
+end)
+```
+
+### Calendar
+
+```lua
+-- calendar.lua
+local cal = sbar.add("item", "calendar", {
+  update_freq = 30,
+  label = { color = colors.fg },
+})
+
+cal:subscribe({ "routine", "forced" }, function()
+  cal:set({ label = os.date("%a %d %b  %H:%M") })
+end)
+```
+
+### Widgets
+
+Battery, CPU/memory metrics, volume, wifi status, and notification count are displayed as right-side widgets with Everforest color coding.
+
+## Helpers
+
+- **app_icons**: Maps application names to Nerd Font/sketchybar-app-font icons
+- **event_providers**: Shell scripts that emit metrics data for CPU, memory, disk usage

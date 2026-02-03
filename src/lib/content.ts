@@ -11,7 +11,7 @@ function readJson<T>(filename: string): T {
   return JSON.parse(raw) as T;
 }
 
-const CONFIG_CATEGORIES: ConfigCategory[] = ["terminal", "editor", "wm", "tools"];
+const CONFIG_CATEGORIES: ConfigCategory[] = ["macos", "arch-linux", "windows", "shared"];
 
 export function getConfigCategories(): {
   category: ConfigCategory;
@@ -20,10 +20,10 @@ export function getConfigCategories(): {
   count: number;
 }[] {
   const labels: Record<ConfigCategory, { label: string; description: string }> = {
-    terminal: { label: "Terminal", description: "Shell, multiplexer, and emulator configs" },
-    editor: { label: "Editor", description: "Neovim setups and plugin configs" },
-    wm: { label: "Window Manager", description: "Tiling WM and key remapping configs" },
-    tools: { label: "Tools", description: "Git, file manager, and launcher configs" },
+    macos: { label: "macOS", description: "AeroSpace, skhd, Karabiner, Sketchybar, Neovim" },
+    "arch-linux": { label: "Arch Linux", description: "Hyprland, xremap, rofi, Neovim" },
+    windows: { label: "Windows", description: "GlazeWM, Zebar" },
+    shared: { label: "Shared", description: "Cross-platform terminal, shell, and tool configs" },
   };
 
   return CONFIG_CATEGORIES.map((category) => {

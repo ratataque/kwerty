@@ -1,0 +1,162 @@
+---
+title: "Neovim (GrimalDev)"
+description: "NvChad-based Neovim with Everforest theme, 50+ plugins, harpoon, avante, and custom statusline"
+category: "macos"
+tool: "neovim"
+contributors: ["GrimalDev"]
+repos: ["GrimalDev/nvim-config"]
+configPath: "nvim/"
+platforms: ["macos"]
+tags: ["editor", "neovim", "nvchad", "lua"]
+---
+
+## Overview
+
+GrimalDev's Neovim is built on NvChad for a polished base, then extended with 50+ plugins. The theme is Everforest with transparency, and includes avante.nvim for AI-assisted editing, harpoon for fast file switching, and extensive DAP/conform/telescope configuration.
+
+## NvChad Base
+
+```lua
+-- chadrc.lua
+local M = {}
+
+M.base46 = {
+  theme = "everforest",
+  transparency = true,
+  hl_override = {
+    Normal = { bg = "NONE" },
+  },
+}
+
+M.ui = {
+  tabufline = { enabled = false },
+  statusline = {
+    order = { "mode", "harpoon", "session", "file", "%=", "lsp_msg", "%=", "diagnostics", "lsp", "cursor", "cwd" },
+    modules = {
+      harpoon = function() ... end,
+      session = function() ... end,
+    },
+  },
+}
+
+M.nvdash = {
+  load_on_startup = true,
+  -- Custom ASCII art header and buttons
+}
+
+return M
+```
+
+## Neovide Support
+
+```lua
+-- Neovide transparency settings
+if vim.g.neovide then
+  vim.g.neovide_transparency = 0.8
+  vim.g.neovide_window_blurred = true
+end
+```
+
+## Folding (UFO + Treesitter)
+
+```lua
+-- Treesitter-based folding with per-filetype overrides
+vim.o.foldcolumn = "1"
+vim.o.foldlevel = 99
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
+
+-- ufo config
+{
+  "kevinhwang91/nvim-ufo",
+  dependencies = "kevinhwang91/promise-async",
+  opts = {
+    provider_selector = function(_, ft)
+      -- per-filetype fold providers
+      return { "treesitter", "indent" }
+    end,
+  },
+}
+```
+
+## Key Plugins
+
+| Plugin | Purpose |
+|--------|---------|
+| `avante.nvim` | AI-powered Cursor-like experience |
+| `blink.cmp` | Fast completion engine |
+| `flash.nvim` | Motion/jump navigation |
+| `harpoon` | Quick file marks (Alt+f/d/s/a) |
+| `telescope.nvim` | Fuzzy finder (leader+.) |
+| `trouble.nvim` | Diagnostics list |
+| `yazi.nvim` | File manager integration |
+| `lazygit.nvim` | Git TUI from Neovim |
+| `octo.nvim` | GitHub PR/issue management |
+| `snacks.nvim` | Utility collection |
+| `conform.nvim` | Formatting |
+| `nvim-dap` | Debug adapter protocol |
+| `undotree` | Visual undo history |
+| `noice.nvim` | UI for messages/cmdline/popupmenu |
+| `nvim-ufo` | Folding with treesitter |
+| `auto-session` | Session persistence |
+| `treesj` | Split/join code blocks |
+| `nvim-spider` | Word motion improvements |
+| `various-textobjs` | Extended text objects |
+
+## Key Mappings
+
+### Harpoon
+
+```lua
+-- Alt+f/d/s/a for marks 1-4
+map("n", "<A-f>", function() harpoon:list():select(1) end)
+map("n", "<A-d>", function() harpoon:list():select(2) end)
+map("n", "<A-s>", function() harpoon:list():select(3) end)
+map("n", "<A-a>", function() harpoon:list():select(4) end)
+map("n", "<leader>a", function() harpoon:list():add() end)
+```
+
+### Telescope
+
+```lua
+map("n", "<leader>.", "<cmd>Telescope find_files<cr>")
+map("n", "<leader>/", "<cmd>Telescope live_grep<cr>")
+map("n", "<leader>,", "<cmd>Telescope buffers<cr>")
+```
+
+### Folding
+
+```lua
+map("n", "<leader>l", "za")           -- toggle fold
+map("n", "<leader>k", "zM")           -- close all folds
+map("n", "<leader>K", "zR")           -- open all folds
+map("n", "<leader>L", "zc")           -- close fold
+map("n", "<leader>h", "zo")           -- open fold
+```
+
+### DAP
+
+```lua
+map("n", "<leader>db", "<cmd>DapToggleBreakpoint<cr>")
+map("n", "<leader>dc", "<cmd>DapContinue<cr>")
+map("n", "<leader>do", "<cmd>DapStepOver<cr>")
+map("n", "<leader>di", "<cmd>DapStepInto<cr>")
+```
+
+### Conform (Formatting)
+
+```lua
+{
+  "stevearc/conform.nvim",
+  opts = {
+    formatters_by_ft = {
+      lua = { "stylua" },
+      javascript = { "prettier" },
+      typescript = { "prettier" },
+      python = { "black" },
+      rust = { "rustfmt" },
+    },
+    format_on_save = { timeout_ms = 500, lsp_fallback = true },
+  },
+}
+```

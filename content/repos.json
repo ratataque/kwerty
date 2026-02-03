@@ -66,10 +66,10 @@
     "name": "dotfiles",
     "fullName": "GrimalDev/dotfiles",
     "contributor": "GrimalDev",
-    "description": "Fish, Kitty, yabai, skhd, karabiner, tmux, lazygit, ranger, btop, fastfetch configs",
+    "description": "Fish, Kitty, AeroSpace, skhd, karabiner, tmux, lazygit, sketchybar, sesh, starship configs",
     "language": "Shell",
     "url": "https://github.com/GrimalDev/dotfiles",
-    "contents": ["fish", "kitty", "yabai", "skhd", "karabiner", "tmux", "lazygit", "ranger", "btop", "fastfetch"]
+    "contents": ["fish", "kitty", "aerospace", "skhd", "karabiner", "tmux", "lazygit", "sketchybar", "sesh", "starship"]
   },
   {
     "name": "nvim-config",

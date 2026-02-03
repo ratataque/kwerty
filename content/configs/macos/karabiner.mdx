@@ -1,0 +1,93 @@
+---
+title: "Karabiner-Elements"
+description: "macOS hardware key remapping with per-device simple modifications"
+category: "macos"
+tool: "karabiner"
+contributors: ["GrimalDev"]
+repos: ["GrimalDev/dotfiles"]
+configPath: "karabiner/karabiner.json"
+platforms: ["macos"]
+tags: ["wm", "keymapping", "macos"]
+---
+
+## Overview
+
+Karabiner-Elements provides hardware-level key remapping on macOS. GrimalDev uses per-device simple modifications for consistent key placement across multiple keyboards (MacBook internal, external keyboards, and Corne).
+
+## Key Modifications (All Keyboards)
+
+Simple modifications applied to MacBook internal and external keyboards:
+
+```json
+{
+  "simple_modifications": [
+    {
+      "from": { "key_code": "caps_lock" },
+      "to": [{ "key_code": "left_control" }]
+    },
+    {
+      "from": { "key_code": "left_command" },
+      "to": [{ "key_code": "left_option" }]
+    },
+    {
+      "from": { "key_code": "left_option" },
+      "to": [{ "key_code": "left_command" }]
+    },
+    {
+      "from": { "key_code": "left_control" },
+      "to": [{ "key_code": "caps_lock" }]
+    },
+    {
+      "from": { "key_code": "right_command" },
+      "to": [{ "key_code": "escape" }]
+    },
+    {
+      "from": { "key_code": "grave_accent_and_tilde" },
+      "to": [{ "key_code": "non_us_backslash" }]
+    },
+    {
+      "from": { "key_code": "non_us_backslash" },
+      "to": [{ "key_code": "grave_accent_and_tilde" }]
+    }
+  ]
+}
+```
+
+### Summary
+
+| From | To | Purpose |
+|------|----|---------|
+| CapsLock | Left Control | Easier ctrl access |
+| Left Cmd | Left Option | Swap cmd/opt for Linux-like layout |
+| Left Option | Left Cmd | Swap cmd/opt for Linux-like layout |
+| Left Control | CapsLock | Move capslock to ctrl position |
+| Right Cmd | Escape | Quick escape without reaching |
+| Grave accent (`) | Non-US backslash | ISO keyboard layout fix |
+| Non-US backslash | Grave accent (`) | ISO keyboard layout fix |
+
+## Corne-Specific Rules
+
+The Corne keyboard has an additional simple modification to swap C, X, and V keys for more comfortable copy/paste positioning:
+
+```json
+{
+  "simple_modifications": [
+    {
+      "from": { "key_code": "c" },
+      "to": [{ "key_code": "x" }]
+    },
+    {
+      "from": { "key_code": "v" },
+      "to": [{ "key_code": "c" }]
+    },
+    {
+      "from": { "key_code": "x" },
+      "to": [{ "key_code": "v" }]
+    }
+  ]
+}
+```
+
+## Per-Device Configuration
+
+Rules are applied per-device using Karabiner's device identification. Each keyboard (MacBook internal, external USB, Corne via Bluetooth) can have independent modification sets while sharing the same base remaps.

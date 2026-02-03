@@ -3,11 +3,11 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { ConfigCategory } from "@/types/content";
 
-const categoryBadgeVariant: Record<ConfigCategory, "terminal" | "editor" | "wm" | "tools"> = {
-  terminal: "terminal",
-  editor: "editor",
-  wm: "wm",
-  tools: "tools",
+const categoryBadgeVariant: Record<ConfigCategory, "macos" | "arch-linux" | "windows" | "shared"> = {
+  macos: "macos",
+  "arch-linux": "arch-linux",
+  windows: "windows",
+  shared: "shared",
 };
 
 export default function ConfigsPage() {
@@ -26,13 +26,13 @@ export default function ConfigsPage() {
             key={cat.category}
             href={`/configs/${cat.category}`}
             accent={
-              cat.category === "terminal"
-                ? "#a6e3a1"
-                : cat.category === "editor"
-                  ? "#cba6f7"
-                  : cat.category === "wm"
-                    ? "#89b4fa"
-                    : "#fab387"
+              cat.category === "macos"
+                ? "#89b4fa"
+                : cat.category === "arch-linux"
+                  ? "#94e2d5"
+                  : cat.category === "windows"
+                    ? "#fab387"
+                    : "#a6e3a1"
             }
           >
             <div className="flex items-center justify-between mb-2">

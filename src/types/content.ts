@@ -32,5 +32,5 @@ export interface Repo {
   contents: string[];
 }
 
-export type ConfigCategory = "terminal" | "editor" | "wm" | "tools";
+export type ConfigCategory = "macos" | "arch-linux" | "windows" | "shared";
 export type Platform = "linux" | "macos" | "windows";

@@ -1,0 +1,122 @@
+---
+title: "tmux"
+description: "Terminal multiplexer with vim-style navigation and session persistence"
+category: "shared"
+tool: "tmux"
+contributors: ["ratataque", "GrimalDev"]
+repos: ["ratataque/.dotfiles", "GrimalDev/dotfiles"]
+configPath: "tmux/tmux.conf"
+platforms: ["linux", "macos"]
+tags: ["terminal", "multiplexer"]
+---
+
+## Overview
+
+tmux is the foundation of the terminal workflow. It provides persistent sessions, window splits, and session management. The config uses `C-a` as prefix (remapped from default `C-b`) and vim-style pane navigation.
+
+## GrimalDev's Configuration
+
+### Core
+
+```bash
+# Shell & terminal
+set -g default-shell /opt/homebrew/bin/fish
+set -g default-terminal "xterm-kitty"
+
+# Prefix
+unbind C-b
+set-option -g prefix C-a
+bind-key C-a send-prefix
+
+# Mouse & settings
+set -g mouse on
+set -g base-index 1
+set -g pane-base-index 1
+set-window-option -g pane-base-index 1
+set-option -g renumber-windows on
+
+# Passthrough & extended keys
+set -g allow-passthrough on
+set -s extended-keys on
+```
+
+### Pane Navigation
+
+```bash
+# Focus panes: Alt+Shift+HJKL
+bind -n M-H select-pane -L
+bind -n M-J select-pane -D
+bind -n M-K select-pane -U
+bind -n M-L select-pane -R
+
+# Splits
+bind -n M-h split-window -h -c "#{pane_current_path}"
+bind -n M-v split-window -v -c "#{pane_current_path}"
+
+# Window select: Alt+j/k/l/;
+bind -n M-j select-window -t 1
+bind -n M-k select-window -t 2
+bind -n M-l select-window -t 3
+bind -n 'M-;' select-window -t 4
+```
+
+### Copy Mode
+
+```bash
+# Enter copy mode with Alt+y
+bind -n M-y copy-mode
+set-window-option -g mode-keys vi
+bind -T copy-mode-vi v send-keys -X begin-selection
+bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel
+bind -T copy-mode-vi C-v send-keys -X rectangle-toggle
+```
+
+### Status Bar (Everforest)
+
+```bash
+set -g status-position top
+set -g status-style "bg=#2b3339,fg=#d3c6aa"
+
+# Left: session name in blue
+set -g status-left "#[bg=#7fbbb3,fg=#2b3339,bold] #S #[bg=#2b3339]"
+set -g status-left-length 40
+
+# Right: time
+set -g status-right "#[fg=#7a8478]%H:%M #[fg=#4f585e]| #[fg=#7fbbb3]%d-%b"
+
+# Window: magenta for current
+set -g window-status-format "#[fg=#7a8478] #I:#W"
+set -g window-status-current-format "#[fg=#d699b6,bold] #I:#W"
+```
+
+### sesh Integration
+
+```bash
+# Bind C-space to sesh (not prefix+T)
+bind-key -n C-space display-popup -E "sesh connect \"$(
+  sesh list | fzf-tmux -p 55%,60% \
+    --no-sort --ansi \
+    --border-label ' sesh ' \
+    --prompt '⚡  ' \
+    --header '  ^a add dir ^d delete' \
+    --bind 'tab:down,btab:up' \
+    --bind 'ctrl-a:change-prompt(⚡  )+reload(sesh list)' \
+    --bind 'ctrl-d:execute(tmux kill-session -t {})+change-prompt(⚡  )+reload(sesh list)'
+)\""
+```
+
+### Plugins
+
+```bash
+# TPM
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-yank'
+set -g @plugin 'jimeh/tmuxifier'
+set -g @plugin 'pschmitt/tmux-ssh-split'
+
+run '~/.tmux/plugins/tpm/tpm'
+```
+
+## Session Management with sesh
+
+tmux sessions are managed via sesh for fast project switching. See the sesh config for details.

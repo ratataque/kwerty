@@ -19,11 +19,11 @@ export function ContributorCard({ contributor }: ContributorCardProps) {
         </div>
         <div className="flex items-center gap-2">
           <span className="text-ctp-overlay0 w-16">WM</span>
-          <Badge variant="wm">{contributor.wm}</Badge>
+          <Badge variant="default">{contributor.wm}</Badge>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-ctp-overlay0 w-16">Editor</span>
-          <Badge variant="editor">{contributor.editor}</Badge>
+          <Badge variant="default">{contributor.editor}</Badge>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-ctp-overlay0 w-16">Board</span>

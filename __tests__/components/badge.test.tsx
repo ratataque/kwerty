@@ -9,7 +9,7 @@ describe("Badge", () => {
   });
 
   it("applies variant styles", () => {
-    const { container } = render(<Badge variant="terminal">term</Badge>);
+    const { container } = render(<Badge variant="shared">term</Badge>);
     const badge = container.firstElementChild;
     expect(badge?.className).toContain("text-ctp-green");
   });

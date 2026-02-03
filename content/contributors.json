@@ -14,7 +14,7 @@
     "github": "GrimalDev",
     "platform": "macOS",
     "os": "macOS",
-    "wm": "yabai",
+    "wm": "AeroSpace",
     "editor": "Neovim (NvChad)",
     "keyboard": "Corne",
     "description": "macOS workflow centered on yabai, skhd, and karabiner. Builds custom neovim plugins and Corne firmware in Rust."

@@ -1,0 +1,188 @@
+---
+title: "Starship Prompt"
+description: "Cross-shell prompt with git status, language versions, and Everforest colors"
+category: "shared"
+tool: "starship"
+contributors: ["ratataque", "GrimalDev"]
+repos: ["ratataque/.dotfiles", "GrimalDev/dotfiles"]
+configPath: "starship/starship.toml"
+platforms: ["linux", "macos"]
+tags: ["terminal", "prompt"]
+---
+
+## Overview
+
+Starship provides a fast, customizable prompt that works across shells. GrimalDev's config uses Everforest colors with right-aligned git info and time. ratataque uses Catppuccin-based colors.
+
+## GrimalDev's Configuration
+
+### Format
+
+```toml
+format = """
+$os\
+$username\
+$hostname\
+$directory\
+$nodejs\
+$rust\
+$python\
+$lua\
+$golang\
+$java\
+$kotlin\
+$docker_context\
+$fill\
+$git_branch\
+$git_state\
+$git_status\
+$time\
+$line_break\
+$character"""
+```
+
+### Prompt Character
+
+```toml
+[character]
+success_symbol = "[](bold fg:green)"
+error_symbol = "[](bold fg:red)"
+```
+
+### OS Detection
+
+```toml
+[os]
+disabled = false
+
+[os.symbols]
+Macos = " "
+Linux = " "
+Windows = " "
+```
+
+### Username & Hostname
+
+```toml
+[username]
+show_always = true
+format = "[$user]($style) "
+
+[hostname]
+ssh_only = false
+format = "on [$hostname]($style) "
+disabled = true
+```
+
+### Directory
+
+```toml
+[directory]
+style = "bold fg:orange"
+truncation_length = 3
+truncation_symbol = "…/"
+```
+
+### Fill (Right-Alignment)
+
+```toml
+[fill]
+symbol = " "
+```
+
+### Git
+
+```toml
+[git_branch]
+symbol = " "
+style = "bold fg:green"
+
+[git_state]
+format = '[\($state( $progress_current of $progress_total)\)]($style) '
+
+[git_status]
+style = "bold red"
+format = '([\[$all_status$ahead_behind\]]($style) )'
+conflicted = "="
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+untracked = "?"
+stashed = "$"
+modified = "!"
+staged = "+"
+renamed = "»"
+deleted = "✘"
+```
+
+### Time
+
+```toml
+[time]
+disabled = false
+format = '[$time]($style)'
+time_format = "%H:%M"
+style = "fg:#d3c6aa"
+```
+
+### Language Modules
+
+```toml
+[nodejs]
+symbol = " "
+style = "fg:#d3c6aa"
+
+[rust]
+symbol = " "
+style = "bold fg:orange"
+
+[python]
+symbol = " "
+style = "bold fg:green"
+
+[lua]
+symbol = " "
+style = "fg:#d3c6aa"
+
+[golang]
+symbol = " "
+style = "fg:#d3c6aa"
+
+[java]
+symbol = " "
+style = "fg:#d3c6aa"
+
+[kotlin]
+symbol = " "
+style = "fg:#d3c6aa"
+
+[docker_context]
+symbol = " "
+style = "fg:#d3c6aa"
+```
+
+### Everforest Palette
+
+```toml
+[palettes.everforest]
+black = "#1e2326"
+red = "#e67e80"
+orange = "#e69875"
+yellow = "#dbbc7f"
+green = "#a7c080"
+aqua = "#83c092"
+blue = "#7fbbb3"
+purple = "#d699b6"
+fg = "#d3c6aa"
+bg = "#2b3339"
+grey = "#7a8478"
+```
+
+## Performance
+
+Starship is written in Rust and renders in under 10ms. The prompt is non-blocking -- if a module takes too long, it's skipped with a configurable timeout:
+
+```toml
+command_timeout = 500
+scan_timeout = 30
+```
