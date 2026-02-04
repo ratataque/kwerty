@@ -1,119 +1,211 @@
 ---
 title: "Neovim (ratataque)"
-description: "Full Neovim setup with telescope, treesitter, harpoon, leap, and flash"
+description: "NvChad-based Neovim config with harpoon, flash, telescope, and AI assistance"
 category: "arch-linux"
 tool: "neovim"
 contributors: ["ratataque"]
 repos: ["ratataque/neovim_config"]
-configPath: "nvim/init.lua"
+configPath: "~/.config/nvim/"
 platforms: ["linux"]
-tags: ["editor", "neovim", "lua"]
+tags: ["editor", "neovim", "lua", "nvchad"]
 ---
 
 ## Overview
 
-ratataque's Neovim config is a from-scratch Lua setup built around fast navigation and efficient editing. Key plugins include telescope for fuzzy finding, treesitter for syntax, harpoon for file marks, and leap/flash for motion.
+ratataque's Neovim config is built on NvChad v2.5, extending it with custom plugins for navigation, editing, and AI assistance. Key features include treesitter-based folding, harpoon for file marks, flash for motion, and Avante for AI coding.
+
+## Structure
+
+```
+~/.config/nvim/
+├── init.lua           # Entry point, loads NvChad + plugins
+├── lua/
+│   ├── chadrc.lua     # NvChad configuration
+│   ├── options.lua    # Vim options + folding setup
+│   ├── mappings.lua   # All keybindings organized by section
+│   ├── configs/       # Plugin configurations
+│   └── plugins/       # Plugin specs (40+ plugins)
+```
 
 ## Plugin Manager
 
-Uses lazy.nvim for plugin management with automatic lazy-loading:
+Uses lazy.nvim with NvChad as the base:
 
 ```lua
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git", "clone", "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", lazypath,
-  })
-end
-vim.opt.rtp:prepend(lazypath)
+require("lazy").setup({
+  {
+    "NvChad/NvChad",
+    lazy = false,
+    branch = "v2.5",
+    import = "nvchad.plugins",
+  },
+  { import = "plugins" },
+}, lazy_config)
 ```
 
-## Core Settings
+## Core Options
 
 ```lua
 vim.g.mapleader = " "
-vim.g.maplocalleader = " "
 
-vim.opt.number = true
 vim.opt.relativenumber = true
-vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
 vim.opt.expandtab = true
-vim.opt.smartindent = true
-vim.opt.wrap = false
-vim.opt.swapfile = false
-vim.opt.backup = false
-vim.opt.undofile = true
-vim.opt.hlsearch = false
-vim.opt.incsearch = true
-vim.opt.termguicolors = true
-vim.opt.scrolloff = 8
-vim.opt.signcolumn = "yes"
-vim.opt.updatetime = 50
+
+-- Treesitter folding
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.foldlevelstart = 0
 ```
 
 ## Key Plugins
 
+### Harpoon (file marks)
+
+Quick file switching with Alt + home row keys:
+
+```lua
+["<A-f>"] = { "<cmd>lua require('harpoon.ui').nav_file(1)<CR>" },
+["<A-d>"] = { "<cmd>lua require('harpoon.ui').nav_file(2)<CR>" },
+["<A-s>"] = { "<cmd>lua require('harpoon.ui').nav_file(3)<CR>" },
+["<A-a>"] = { "<cmd>lua require('harpoon.ui').nav_file(4)<CR>" },
+
+["<leader>mf"] = { "<cmd>lua require('harpoon.mark').replace_file(1)<CR>" },
+["<C-e>"] = { "<cmd>lua require('harpoon.ui').toggle_quick_menu()<CR>" },
+```
+
 ### Telescope
 
 ```lua
-{
-  "nvim-telescope/telescope.nvim",
-  dependencies = { "nvim-lua/plenary.nvim" },
-  keys = {
-    { "<leader>ff", "<cmd>Telescope find_files<cr>" },
-    { "<leader>fg", "<cmd>Telescope live_grep<cr>" },
-    { "<leader>fb", "<cmd>Telescope buffers<cr>" },
-    { "<leader>fh", "<cmd>Telescope help_tags<cr>" },
-  },
-}
+["<leader>."] = { "<cmd>Telescope find_files<CR>" },
+["<leader>ff"] = { "<cmd>Telescope frecency workspace=CWD<CR>" },
+["<leader>fw"] = { "<cmd>Telescope live_grep<CR>" },
+["<leader>b"] = { "<cmd>Telescope buffers<CR>" },
+["<leader>/"] = { "<cmd>Telescope current_buffer_fuzzy_find<CR>" },
+["<leader>fu"] = { "<cmd>Telescope undo<CR>" },
+[":"] = { "<cmd>Telescope cmdline<CR>" },
 ```
 
-### Harpoon
+### Flash + Leap
+
+Motion plugins for fast cursor navigation (configured via plugin specs).
+
+### Avante (AI)
 
 ```lua
-{
-  "ThePrimeagen/harpoon",
-  branch = "harpoon2",
-  keys = {
-    { "<leader>a", function() require("harpoon"):list():add() end },
-    { "<C-e>", function() require("harpoon").ui:toggle_quick_menu(require("harpoon"):list()) end },
-    { "<C-h>", function() require("harpoon"):list():select(1) end },
-    { "<C-t>", function() require("harpoon"):list():select(2) end },
-    { "<C-n>", function() require("harpoon"):list():select(3) end },
-    { "<C-s>", function() require("harpoon"):list():select(4) end },
-  },
-}
-```
-
-### Leap + Flash
-
-Motion plugins for fast cursor navigation:
-
-```lua
--- Leap: s{char}{char} to jump
-{ "ggandor/leap.nvim", config = function() require("leap").add_default_mappings() end },
--- Flash: enhanced f/t motions
-{ "folke/flash.nvim", event = "VeryLazy" },
+["<leader>e"] = { "<cmd>AvanteToggle<CR>" },
+["<leader>ao"] = { "<cmd>AvanteClear<CR>" },
+-- Visual mode
+["<leader>ae"] = { "<cmd>AvanteEdit<CR>" },
 ```
 
 ### blink.cmp
 
-Completion engine with LSP integration:
+Completion engine with LSP, path, snippets, and buffer sources.
+
+## Keybindings
+
+Organized into sections in `mappings.lua`:
+
+### General
 
 ```lua
-{
-  "saghen/blink.cmp",
-  dependencies = { "rafamadriz/friendly-snippets" },
-  opts = {
-    keymap = { preset = "default" },
-    sources = { default = { "lsp", "path", "snippets", "buffer" } },
-  },
-}
+["<A-x>"] = { "<C-w>c", "Window close" },
+["<A-e>"] = { "<cmd>qa<CR>", "Exit" },
+["<leader>j"] = { "<cmd>normal! zz<CR>", "Center buffer" },
+["<leader>ca"] = { "<cmd>lua require('tiny-code-action').code_action()<CR>" },
+["<leader>cb"] = { "<cmd>%bd|e#<CR>", "Close all buffers" },
+["<leader><leader>"] = { "<cmd>Telescope resume<CR>" },
 ```
 
-## LSP Configuration
+### Folding
 
-Language servers are managed via mason.nvim with automatic installation for Lua, TypeScript, Rust, Python, and Go.
+```lua
+["<leader>l"] = { "zA", "Toggle fold recursively" },
+["<leader>k"] = { "za", "Toggle fold" },
+["<leader>K"] = { "zRzz", "Open all folds" },
+["<leader>L"] = { "zMzz", "Close all folds" },
+["<leader>h"] = { "zMzvzz", "Focus current fold" },
+["["] = { "zj", "Next fold" },
+["]"] = { "zk", "Prev fold" },
+```
+
+### Git
+
+```lua
+["<leader>gg"] = { "<cmd>LazyGit<CR>" },
+["<leader>gc"] = { "<cmd>Telescope git_commits<CR>" },
+["<leader>gb"] = { "<cmd>Telescope git_branches<CR>" },
+["<leader>gs"] = { "<cmd>Telescope git_status<CR>" },
+["<leader>gvd"] = { "<cmd>DiffviewOpen<CR>" },
+["<leader>gvf"] = { "<cmd>DiffviewFileHistory %<CR>" },
+```
+
+### Text Editing
+
+```lua
+-- Insert mode
+["<C-b>"] = { "<ESC>^i", "Beginning of line" },
+["<C-e>"] = { "<End>", "End of line" },
+["<C-h>"] = { "<Backspace>", "Backspace" },
+["<C-l>"] = { "<Delete>", "Delete" },
+
+-- Visual mode: move lines
+["<C-j>"] = { ":m '>+1<CR>gv=gv", "Move down" },
+["<C-k>"] = { ":m '<-2<CR>gv=gv", "Move up" },
+
+-- Visual surround
+["("] = { "<Plug>(nvim-surround-visual)(" },
+["{"] = { "<Plug>(nvim-surround-visual){" },
+```
+
+### DAP (Debugging)
+
+```lua
+["<leader>ds"] = { "<cmd>lua require'dap'.toggle_breakpoint()<CR>" },
+["<leader>dm"] = { "<cmd>DapContinue<CR>" },
+["<down>"] = { "<cmd>DapStepInto<CR>" },
+["<up>"] = { "<cmd>DapStepOver<CR>" },
+```
+
+### Various Text Objects
+
+Custom text objects via `various-textobjs`:
+
+```lua
+vim.keymap.set({ "o", "x" }, "an", 'require("various-textobjs").number("outer")')
+vim.keymap.set({ "o", "x" }, "aa", 'require("various-textobjs").indentation("outer", "outer")')
+vim.keymap.set({ "o", "x" }, "iv", 'require("various-textobjs").value("inner")')
+vim.keymap.set({ "o", "x" }, "ik", 'require("various-textobjs").key("inner")')
+vim.keymap.set({ "o", "x" }, "O", 'require("various-textobjs").subword("inner")')
+vim.keymap.set({ "o", "x" }, "o", "iw")
+```
+
+## Notable Plugins
+
+- **telescope.nvim** + frecency, undo, cmdline extensions
+- **harpoon** - Quick file switching
+- **flash.nvim** + **leap.nvim** - Motion
+- **nvim-surround** - Surround operations
+- **trouble.nvim** - Diagnostics panel
+- **lazygit.nvim** - Git UI
+- **diffview.nvim** - Git diff viewer
+- **avante.nvim** - AI coding assistant
+- **conform.nvim** - Formatting
+- **auto-session** - Session management
+- **yazi.nvim** - File manager integration
+- **blink.cmp** - Completion
+- **various-textobjs** - Custom text objects
+
+## Neovide Support
+
+```lua
+if vim.g.neovide then
+    vim.g.neovide_transparency = 0.8
+    vim.g.neovide_refresh_rate = 120
+    vim.g.neovide_cursor_vfx_mode = "ripple"
+    vim.g.neovide_scale_factor = 0.7
+    vim.g.neovide_window_blurred = 1
+end
+```

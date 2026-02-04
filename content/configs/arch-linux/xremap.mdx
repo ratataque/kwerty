@@ -1,58 +1,208 @@
 ---
 title: "xremap"
-description: "Key remapping daemon for Linux with per-application rules"
+description: "Key remapping daemon with extensive per-application rules"
 category: "arch-linux"
 tool: "xremap"
 contributors: ["ratataque"]
 repos: ["ratataque/.dotfiles"]
-configPath: "xremap/config.yml"
+configPath: "~/.config/xremap/config.yml"
 platforms: ["linux"]
 tags: ["wm", "keymapping"]
 ---
 
 ## Overview
 
-xremap is a key remapper for Linux (X11 and Wayland) that allows per-application keybinding overrides. ratataque uses it to create a consistent navigation layer across all applications.
+xremap is a key remapper for Linux (X11 and Wayland) that allows per-application keybinding overrides. ratataque uses it extensively to create vim-style navigation and consistent editing shortcuts across all applications.
 
-## Configuration
+## Global Modmap
 
 ```yaml
-# xremap config.yml
 modmap:
-  - name: CapsLock to Escape/Control
+  - name: Global
     remap:
-      CapsLock:
-        held: leftctrl
-        alone: esc
-        alone_timeout_millis: 150
+      CapsLock: Ctrl_L      # CapsLock becomes Control
+      Alt_R: Esc            # Right Alt for Ctrl+Click scenarios
+```
 
+## Global Keymap
+
+```yaml
 keymap:
-  - name: Global navigation
+  - name: all
     remap:
-      # Ctrl+hjkl for arrow keys everywhere
-      C-h: left
-      C-j: down
-      C-k: up
-      C-l: right
+      C-m: enter            # Ctrl+M as Enter everywhere
+```
 
-  - name: Emacs-style line navigation
-    remap:
-      C-a: home
-      C-e: end
-      C-d: delete
+## Application-Specific Remaps
 
-  - name: Browser specific
-    application:
-      only: [firefox, chromium]
-    remap:
-      # Tab navigation
-      Alt-h: C-Shift-Tab
-      Alt-l: C-Tab
-      Alt-w: C-w
+### 1Password
+
+```yaml
+- name: 1Password
+  application:
+    only: 1Password
+  remap:
+    C-dot: C-k              # Quick search
+    C-w: C-backspace        # Delete word
+    C-h: backspace          # Backspace
+    M-C-m: C-enter          # Alt+Ctrl+M for Ctrl+Enter
+
+    # Navigation
+    M-j: M-down
+    M-k: M-up
+    M-h: C-Shift-Tab        # Previous tab
+    M-l: C-Tab              # Next tab
+    M-C-h: C-left           # Word left
+    M-C-l: C-right          # Word right
+
+    M-x: C-w                # Close
+
+    C-j: down
+    C-k: up
+```
+
+### Notion
+
+```yaml
+- name: notion
+  application:
+    only: Notion
+  remap:
+    C-dot: C-k
+    C-w: C-backspace
+    C-h: backspace
+
+    # Tab navigation
+    M-h: C-Shift-Tab
+    M-l: C-Tab
+    M-C-h: C-left
+    M-C-l: C-right
+
+    # Vim-style line navigation
+    shift-6: home           # ^ for beginning of line
+    shift-4: end            # $ for end of line
+
+    C-j: down
+    C-k: up
+```
+
+### Discord / Vesktop
+
+```yaml
+- name: discord
+  application:
+    only: [discord, vesktop, equibop]
+  remap:
+    C-dot: C-k
+    C-w: C-backspace
+    C-h: backspace
+
+    # Navigation
+    M-j: M-down
+    M-k: M-up
+    M-h: left
+    M-l: right
+    M-C-h: C-left
+    M-C-l: C-right
+
+    # Server switching (Alt + home row)
+    M-a: C-1
+    M-s: C-2
+    M-d: C-3
+    M-f: C-4
+    M-g: C-5
+    M-z: C-6
+    M-v: C-7
+    M-x: C-8
+    M-c: C-9
+    M-b: C-0
+
+    C-j: down
+    C-k: up
+```
+
+### Web Browsers (Firefox, Chromium)
+
+```yaml
+- name: webbrowser
+  application:
+    only: [chromium, firefox]
+  remap:
+    C-w: C-backspace
+    C-h: backspace
+
+    # Tab switching (Alt + home row for tab numbers)
+    M-a: M-1
+    M-s: M-2
+    M-d: M-3
+    M-f: M-4
+    M-g: M-5
+    M-z: M-6
+    M-v: M-7
+    M-x: M-8
+    M-c: M-9
+    M-b: M-0
+
+    M-x: C-w               # Close tab
+
+    C-j: down
+    C-k: up
+
+    # Tab navigation
+    M-h: C-Shift-Tab       # Previous tab
+    M-l: C-Tab             # Next tab
+
+    Alt_L: M               # Left Alt behavior
+
+- name: chromium
+  application:
+    only: chromium
+  remap:
+    C-dot: C-k             # Omnibox focus
+```
+
+### Wofi (Launcher)
+
+```yaml
+- name: wofi
+  application:
+    only: wofi
+  remap:
+    C-w: C-backspace
+    C-h: backspace
+
+    M-h: left
+    M-l: right
+    M-C-h: C-left
+    M-C-l: C-right
+
+    C-j: down
+    C-k: up
 ```
 
 ## Key Philosophy
 
-The most important remap is CapsLock → Escape (tap) / Control (hold). This puts Escape on the home row for vim and creates a more comfortable Control position for all shortcuts.
+1. **CapsLock → Control**: The most important remap. Puts Control on the home row for comfortable shortcuts.
 
-The `C-hjkl` arrow keys provide vim-style navigation in every application without needing vim mode.
+2. **Right Alt → Escape**: Useful for Ctrl+Click scenarios where you need quick Escape access.
+
+3. **Ctrl+M → Enter**: Consistent Enter key across all apps.
+
+4. **Ctrl+H/J/K/L**: Vim-style navigation in apps that support it (up/down movement).
+
+5. **Alt+H/L**: Tab navigation (previous/next) across browsers and tabbed apps.
+
+6. **Alt+Home Row (A-G, Z-B)**: Quick tab/server switching using left hand only.
+
+7. **Ctrl+W**: Delete word backward (like terminals).
+
+## Systemd Service
+
+xremap runs as a user service, started by Hyprland:
+
+```conf
+# In autostart.conf
+exec-once = systemctl --user start xremap
+```
+
+Service file at `~/.config/systemd/user/xremap.service`.
