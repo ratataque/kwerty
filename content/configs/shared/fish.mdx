@@ -1,108 +1,292 @@
 ---
 title: "Fish Shell"
-description: "User-friendly shell with autosuggestions, syntax highlighting, and sane defaults"
-category: "shared"
+description: "User-friendly shell with vi mode, fzf integration, and extensive aliases"
+category: "terminal"
 tool: "fish"
 contributors: ["ratataque", "GrimalDev"]
 repos: ["ratataque/.dotfiles", "GrimalDev/dotfiles"]
-configPath: "fish/config.fish"
+configPath: "~/.config/fish/config.fish"
 platforms: ["linux", "macos"]
-tags: ["shell", "fish"]
+tags: ["shell", "fish", "vi-mode", "fzf"]
 ---
 
 ## Overview
 
-Fish is the shell of choice for both contributors. Unlike bash/zsh, Fish works well out of the box with autosuggestions, syntax highlighting, and tab completions without plugins.
+Fish is the shell of choice for both contributors. Unlike bash/zsh, Fish works well out of the box with autosuggestions, syntax highlighting, and tab completions. ratataque's config uses vi mode with extensive fzf integration and Wayland-specific environment variables.
 
 ## Core Config
 
 ```fish
-# config.fish
-set -g fish_greeting ""
-set -gx XDG_CONFIG_HOME $HOME/.config
-set -gx EDITOR nvim
-set -gx VISUAL nvim
+# Suppress greeting
+set fish_greeting
 
-# Vi key bindings
-fish_vi_key_bindings
+# Editor
+set EDITOR nvim
+set -gx EDITOR nvim
+set VISUAL nvim
+set -gx VISUAL nvim
+set TERM xterm-256color
 
 # Path
-fish_add_path /opt/homebrew/bin
-fish_add_path /opt/homebrew/sbin
-fish_add_path $HOME/.local/bin
-fish_add_path $HOME/.cargo/bin
-fish_add_path $HOME/go/bin
-fish_add_path $HOME/.bun/bin
+set -e fish_user_paths
+set -U fish_user_paths $HOME/.local/bin $HOME/Applications $fish_user_paths
+
+# Go
+set -x GOPATH $HOME/go
+set -x PATH $PATH $GOPATH/bin
+
+# Rust
+set -x RUSTPATH $HOME/.cargo
+set -x PATH $PATH $RUSTPATH/bin
+set -gx RUST_BACKTRACE 1
+
+# Bun
+set --export BUN_INSTALL "$HOME/.bun"
+set --export PATH $BUN_INSTALL/bin $PATH
+
+# OpenCode
+fish_add_path /home/ewan/.opencode/bin
+```
+
+## Wayland Environment
+
+```fish
+set -gx QT_QPA_PLATFORM wayland
+set -gx QT_QPA_PLATFORMTHEME qt6ct
+set -gx GTK_THEME Adwaita-dark
+set -gx GTK_USE_PORTAL 1
+set -gx GDK_BACKEND wayland
+set -gx ELECTRON_OZONE_PLATFORM_HINT wayland
+set -gx WLR_RENDERER vulkan
+set -gx _JAVA_AWT_WM_NONREPARENTING 1
+
+# AMD GPU
+set -gx AMD_VULKAN_ICD RADV
+set -gx VK_ICD_FILENAMES /usr/share/vulkan/icd.d/radeon_icd.x86_64.json
+```
+
+## Vi Mode
+
+Fish is configured with vi keybindings and cursor shape indicators:
+
+```fish
+fish_vi_key_bindings
+
+if status is-interactive
+    fish_vi_key_bindings
+
+    # Cursor shapes for vi modes
+    set fish_cursor_default block blink
+    set fish_cursor_insert line blink
+    set fish_cursor_replace_one underscore blink
+    set fish_cursor_visual block
+end
+
+# Bash-style !! and !$ in vi mode
+bind -Minsert ! __history_previous_command
+bind -Minsert '$' __history_previous_command_arguments
+```
+
+## FZF Integration
+
+Extensive fzf bindings in insert mode:
+
+```fish
+# FZF settings
+set -U FZF_CD_WITH_HIDDEN_COMMAND "fd -H -u --type d --exclude node_modules . \$dir"
+set -U FZF_OPEN_COMMAND "fd -H -u --type f --exclude node_modules . \$dir"
+set -U FZF_TMUX 1
+set -U FZF_ENABLE_OPEN_PREVIEW 0
+
+# Keybindings (insert mode)
+bind -M insert \cf '__fzf_cd --hidden'    # Ctrl+F: cd with fzf
+bind -M insert \t __fzf_complete          # Tab: fzf completion
+
+bind -M insert \ed lazydocker             # Alt+D: lazydocker
+bind -M insert \e. "vim ."                # Alt+.: vim in current dir
+bind -M insert \ee vim                    # Alt+E: vim
+bind -M insert \er yazi                   # Alt+R: yazi file manager
+
+# Pacman with fzf
+bind -M insert \ea "pacman -Slq | fzf --multi --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
+bind -M insert \ez "pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
 ```
 
 ## Aliases
 
+### Navigation
+
 ```fish
-alias vim="nvim"
-alias tree="exa --tree"
-alias ls="exa -a --icons --group-directories-first"
-alias ll="exa -la --icons --group-directories-first"
-alias cat="bat"
-alias icat="kitten icat"
-alias dots="cd ~/.config && nvim"
-alias ff="fastfetch"
-alias sc="source ~/.config/fish/config.fish"
-alias g="git"
-alias lg="lazygit"
+alias ..='cd ..'
+alias ...='cd ../..'
+alias .3='cd ../../..'
+alias .4='cd ../../../..'
+alias .5='cd ../../../../..'
+```
+
+### Editor & Tools
+
+```fish
+alias vim='nvim'
+alias cat='bat'
+alias oc='opencode'
+alias sc='sesh connect'
+```
+
+### Exa (ls replacement)
+
+```fish
+alias ls='exa -al --color=always --group-directories-first'
+alias la='exa -a --color=always --group-directories-first'
+alias ll='exa -l --color=always --group-directories-first'
+alias lt='exa -aT --color=always --group-directories-first'  # tree
+alias l.='exa -a | egrep "^\."'
+```
+
+### Pacman & AUR
+
+```fish
+alias pac='sudo pacman -S'
+alias pacu='sudo pacman -Syu'
+alias unpac='sudo pacman -Rcns'
+alias cleanup='sudo pacman -Rns (pacman -Qtdq)'  # remove orphans
+alias unlock='sudo rm /var/lib/pacman/db.lck'
+
+# FZF-powered package management
+alias pacl="pacman -Slq | fzf --multi --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
+alias pacr="pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
+alias yayl="yay -Slq | fzf --multi --preview 'yay -Si {1}' | xargs -ro yay -S"
+alias yayr="yay -Qq | fzf --multi --preview 'yay -Qi {1}' | xargs -ro yay -Rns"
+```
+
+### Mirror Management
+
+```fish
+alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
+alias mirrord="sudo reflector --latest 50 --number 20 --sort delay --save /etc/pacman.d/mirrorlist"
+alias mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/pacman.d/mirrorlist"
+```
+
+### Git
+
+```fish
+alias addup='git add -u'
+alias addall='git add .'
+alias branch='git branch'
+alias checkout='git checkout'
+alias clone='git clone'
+alias commit='git commit -m'
+alias fetch='git fetch'
+alias pull='git pull origin'
+alias push='git push origin'
+alias gitrmcached='git rm --cached -r (git ls-files -i -c --exclude-from=".gitignore")'
+```
+
+### Tmux
+
+```fish
+set -U fish_user_paths $HOME/.tmuxifier/bin $fish_user_paths
+eval (tmuxifier init - fish)
+alias tm='tmuxifier'
+alias tmux='tmux -u'
+```
+
+### Safety
+
+```fish
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -i'
+```
+
+### Misc
+
+```fish
+alias grep='grep --color=auto'
+alias df='df -h'
+alias free='free -m'
+alias jctl='journalctl -p 3 -xb'  # error messages
+alias dots='git --git-dir=$HOME/.dotfiles --work-tree=$HOME/.config'  # dotfiles management
 ```
 
 ## Functions
 
-Custom Fish functions for common operations:
+### Share file (upload to 0x0.st)
 
 ```fish
-# sudo.fish - re-run last command with sudo
-function sudo
-    if test (count $argv) -eq 0
-        command sudo $history[1]
-    else
-        command sudo $argv
-    end
-end
-
-# brew.fish - update, upgrade, cleanup
-function brew
-    if test (count $argv) -eq 0
-        command brew update && command brew upgrade && command brew cleanup
-    else
-        command brew $argv
-    end
-end
-
-# jqf.fish - interactive jq with fzf
-function jqf
-    echo '' | fzf --print-query --preview "cat $argv[1] | jq {q}"
-end
-
-# share.fish - create temp share via transfer.sh
 function share
-    curl --upload-file $argv[1] "https://transfer.sh/$argv[1]"
-end
-
-# mfzf.fish - man page fuzzy finder
-function mfzf
-    man -k . | fzf --prompt='Man> ' | awk '{print $1}' | xargs -r man
+    curl -F "file=@$argv" https://0x0.st | wl-copy
 end
 ```
 
-## Shell Integrations
+### Backup file
 
 ```fish
-# fzf key bindings
-fzf --fish | source
+function backup --argument filename
+    cp $filename $filename.bak
+end
+```
 
-# zoxide (smart cd)
+### Copy (recursive-aware)
+
+```fish
+function copy
+    set count (count $argv | tr -d \n)
+    if test "$count" = 2; and test -d "$argv[1]"
+        set from (echo $argv[1] | trim-right /)
+        set to (echo $argv[2])
+        command cp -r $from $to
+    else
+        command cp $argv
+    end
+end
+```
+
+## Fish Plugins
+
+Using fisher plugin manager:
+
+```
+jethrokuan/fzf
+barnybug/docker-fish-completion
+```
+
+## Colors
+
+```fish
+set fish_color_normal brcyan
+set fish_color_autosuggestion '#7d7d7d'
+set fish_color_command brcyan
+set fish_color_error '#ff6c6b'
+set fish_color_param brcyan
+```
+
+## Manpager
+
+```fish
+# bat as manpager
+set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
+```
+
+## Startup
+
+```fish
+# Fastfetch with random Pokemon in new tmux sessions
+if set -q TMUX; and not set -q FASTFETCH_RAN; and set -q TMUX_PANE
+    set -gx FASTFETCH_RAN 1
+    pokeget random --hide-name | fastfetch --file-raw -
+end
+
+# Initialize tools
 zoxide init fish | source
-
-# Starship prompt
 starship init fish | source
 ```
 
-## Prompt
+## Integration
 
-Both contributors use Starship prompt (see starship config) rather than Fish's built-in prompt.
+- **Starship** for prompt (see starship config)
+- **zoxide** for smart cd
+- **fzf** for fuzzy finding everywhere
+- **tmuxifier** for tmux session management
+- **yazi** as file manager (Alt+R)
+- **lazydocker** for Docker management (Alt+D)
