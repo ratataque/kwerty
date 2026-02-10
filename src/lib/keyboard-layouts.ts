@@ -222,54 +222,200 @@ export const corneLayout: KeyboardLayout = {
     ],
 };
 
-// TOTEM 38-key layout (similar to Corne but 3x5+3 with extra bottom row pinky keys)
+// TOTEM 38-key layout (3x5+4 thumbs per side)
 const totemBase: KeyDef[] = [
+    // Row 0 - Left
     key(0, 0, "Q", ""),
     key(0, 1, "W", ""),
     key(0, 2, "E", ""),
     key(0, 3, "R", ""),
     key(0, 4, "T", ""),
+    // Row 0 - Right
     key(0, 6, "Y", ""),
     key(0, 7, "U", ""),
     key(0, 8, "I", ""),
     key(0, 9, "O", ""),
     key(0, 10, "P", ""),
+    // Row 1 - Left
     key(1, 0, "A", ""),
     key(1, 1, "S", ""),
     key(1, 2, "D", ""),
     key(1, 3, "F", ""),
     key(1, 4, "G", ""),
+    // Row 1 - Right
     key(1, 6, "H", ""),
     key(1, 7, "J", ""),
     key(1, 8, "K", ""),
     key(1, 9, "L", ""),
     key(1, 10, ";", ""),
+    // Row 2 - Left (outer pinky has shift)
     key(2, 0, "Z", "Shift"),
     key(2, 1, "X", ""),
     key(2, 2, "C", ""),
     key(2, 3, "V", ""),
     key(2, 4, "B", ""),
+    // Row 2 - Right (outer pinky has shift)
     key(2, 6, "N", ""),
     key(2, 7, "M", ""),
     key(2, 8, ",", ""),
     key(2, 9, ".", ""),
     key(2, 10, "/", "Shift"),
-    thumbKey(3, 2, "Esc", ""),
-    thumbKey(3, 3, "Space", "Nav"),
-    thumbKey(3, 4, "Tab", ""),
-    thumbKey(3, 6, "Enter", ""),
-    thumbKey(3, 7, "Bksp", "Sym"),
-    thumbKey(3, 8, "Del", ""),
+    // Thumbs - Left
+    thumbKey(3, 3, "SYM", "SL"),
+    thumbKey(3, 4, "Space", ""),
+    // Thumbs - Right
+    thumbKey(3, 6, "Bksp", ""),
+    thumbKey(3, 7, "ACT", "SL"),
+];
+
+// TOTEM Layer 1: Numbers & Symbols
+const totemSym: KeyDef[] = [
+    // Row 0 - Left
+    key(0, 0, "1", ""),
+    key(0, 1, "2", ""),
+    key(0, 2, "3", ""),
+    key(0, 3, "4", ""),
+    key(0, 4, "5", ""),
+    // Row 0 - Right
+    key(0, 6, "6", ""),
+    key(0, 7, "7", ""),
+    key(0, 8, "8", ""),
+    key(0, 9, "9", ""),
+    key(0, 10, "0", ""),
+    // Row 1 - Left
+    key(1, 0, "!", ""),
+    key(1, 1, "@", ""),
+    key(1, 2, "#", ""),
+    key(1, 3, "$", ""),
+    key(1, 4, "%", ""),
+    // Row 1 - Right
+    key(1, 6, "^", ""),
+    key(1, 7, "&", ""),
+    key(1, 8, "*", ""),
+    key(1, 9, "(", ""),
+    key(1, 10, ")", ""),
+    // Row 2 - Left
+    key(2, 0, "`", "Shift"),
+    key(2, 1, "~", ""),
+    key(2, 2, "{", ""),
+    key(2, 3, "}", ""),
+    key(2, 4, "\\", ""),
+    // Row 2 - Right
+    key(2, 6, "-", ""),
+    key(2, 7, "=", ""),
+    key(2, 8, "[", ""),
+    key(2, 9, "]", ""),
+    key(2, 10, "|", "Shift"),
+    // Thumbs
+    thumbKey(3, 3, "", ""),
+    thumbKey(3, 4, "Space", ""),
+    thumbKey(3, 6, "Bksp", ""),
+    thumbKey(3, 7, "", ""),
+];
+
+// TOTEM Layer 2: F-keys, Media, Arrows
+const totemAct: KeyDef[] = [
+    // Row 0 - Left
+    key(0, 0, "F1", ""),
+    key(0, 1, "F2", ""),
+    key(0, 2, "F3", ""),
+    key(0, 3, "F4", ""),
+    key(0, 4, "F5", ""),
+    // Row 0 - Right
+    key(0, 6, "F6", ""),
+    key(0, 7, "F7", ""),
+    key(0, 8, "F8", ""),
+    key(0, 9, "F9", ""),
+    key(0, 10, "F10", ""),
+    // Row 1 - Left
+    key(1, 0, "F11", ""),
+    key(1, 1, "F12", ""),
+    key(1, 2, "", ""),
+    key(1, 3, "", ""),
+    key(1, 4, "", ""),
+    // Row 1 - Right
+    key(1, 6, "←", ""),
+    key(1, 7, "↓", ""),
+    key(1, 8, "↑", ""),
+    key(1, 9, "→", ""),
+    key(1, 10, "", ""),
+    // Row 2 - Left
+    key(2, 0, "", "Shift"),
+    key(2, 1, "", ""),
+    key(2, 2, "", ""),
+    key(2, 3, "", ""),
+    key(2, 4, "", ""),
+    // Row 2 - Right
+    key(2, 6, "Mute", ""),
+    key(2, 7, "Vol-", ""),
+    key(2, 8, "Vol+", ""),
+    key(2, 9, "Prev", ""),
+    key(2, 10, "Next", "Shift"),
+    // Thumbs
+    thumbKey(3, 3, "", ""),
+    thumbKey(3, 4, "Space", ""),
+    thumbKey(3, 6, "Bksp", ""),
+    thumbKey(3, 7, "", ""),
+];
+
+// TOTEM Layer 3: Bluetooth
+const totemCon: KeyDef[] = [
+    // Row 0 - Left
+    key(0, 0, "BT0", ""),
+    key(0, 1, "BT1", ""),
+    key(0, 2, "BT2", ""),
+    key(0, 3, "BT3", ""),
+    key(0, 4, "BT4", ""),
+    // Row 0 - Right
+    key(0, 6, "", ""),
+    key(0, 7, "", ""),
+    key(0, 8, "", ""),
+    key(0, 9, "", ""),
+    key(0, 10, "", ""),
+    // Row 1 - Left
+    key(1, 0, "BT Clr", ""),
+    key(1, 1, "", ""),
+    key(1, 2, "", ""),
+    key(1, 3, "", ""),
+    key(1, 4, "", ""),
+    // Row 1 - Right
+    key(1, 6, "", ""),
+    key(1, 7, "", ""),
+    key(1, 8, "", ""),
+    key(1, 9, "", ""),
+    key(1, 10, "", ""),
+    // Row 2 - Left
+    key(2, 0, "", ""),
+    key(2, 1, "", ""),
+    key(2, 2, "", ""),
+    key(2, 3, "", ""),
+    key(2, 4, "", ""),
+    // Row 2 - Right
+    key(2, 6, "", ""),
+    key(2, 7, "", ""),
+    key(2, 8, "", ""),
+    key(2, 9, "", ""),
+    key(2, 10, "", ""),
+    // Thumbs
+    thumbKey(3, 3, "", ""),
+    thumbKey(3, 4, "", ""),
+    thumbKey(3, 6, "", ""),
+    thumbKey(3, 7, "", ""),
 ];
 
 export const totemLayout: KeyboardLayout = {
     id: "totem",
     name: "TOTEM",
-    description: "38-key split columnar stagger keyboard",
+    description: "38-key split columnar stagger keyboard (GrimalDev QWERTY)",
     rows: 4,
     cols: 11,
     splitGap: 1,
-    layers: [{ name: "Base", keys: totemBase }],
+    layers: [
+        { name: "Base", keys: totemBase },
+        { name: "SYM", keys: totemSym },
+        { name: "ACT", keys: totemAct },
+        { name: "CON", keys: totemCon },
+    ],
 };
 
 // Kinesis 360 Pro - simplified representation
