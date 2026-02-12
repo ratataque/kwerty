@@ -46,8 +46,8 @@ export default function Home() {
                 className="mb-16 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 w-full"
             >
                 {/* Left: Blob image - below on mobile, left side on desktop */}
-                <div className="shrink-0 order-2 lg:order-1 lg:ml-12 translate-[10vw] relative">
-                    <BlobImage src="/pro.jpg" alt="Keyboard Setup" />
+                <div className="shrink-0 order-2 lg:order-1 lg:ml-12 flex justify-center relative">
+                    <BlobImage src="/ski.jpg" alt="Keyboard Setup" />
                 </div>
 
                 {/* Right: ASCII art and terminal */}
