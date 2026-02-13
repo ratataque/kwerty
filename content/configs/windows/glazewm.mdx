@@ -25,7 +25,7 @@ general:
 gaps:
   inner_gap: "8px"
   outer_gap:
-    top: "8px"
+    top: "48px"
     right: "8px"
     bottom: "8px"
     left: "8px"
@@ -56,15 +56,47 @@ keybindings:
 
   # Workspaces
   - commands: ["focus --workspace 1"]
-    bindings: ["alt+1"]
+    bindings: ["alt+a"]
   - commands: ["focus --workspace 2"]
-    bindings: ["alt+2"]
+    bindings: ["alt+s"]
   - commands: ["focus --workspace 3"]
-    bindings: ["alt+3"]
+    bindings: ["alt+d"]
+  - commands: ["focus --workspace 4"]
+    bindings: ["alt+f"]
+  - commands: ["focus --workspace 5"]
+    bindings: ["alt+g"]
+  - commands: ["focus --workspace 6"]
+    bindings: ["alt+z"]
+  - commands: ["focus --workspace 7"]
+    bindings: ["alt+v"]
+  - commands: ["focus --workspace 8"]
+    bindings: ["alt+x"]
+  - commands: ["focus --workspace 9"]
+    bindings: ["alt+c"]
+
+  # Move focused window to a workspace defined in `workspaces` config.
+  - commands: ['move --workspace 1', 'focus --workspace 1']
+    bindings: ['alt+shift+a']
+  - commands: ['move --workspace 2', 'focus --workspace 2']
+    bindings: ['alt+shift+s']
+  - commands: ['move --workspace 3', 'focus --workspace 3']
+    bindings: ['alt+shift+d']
+  - commands: ['move --workspace 4', 'focus --workspace 4']
+    bindings: ['alt+shift+f']
+  - commands: ['move --workspace 5', 'focus --workspace 5']
+    bindings: ['alt+shift+g']
+  - commands: ['move --workspace 6', 'focus --workspace 6']
+    bindings: ['alt+shift+z']
+  - commands: ['move --workspace 7', 'focus --workspace 7']
+    bindings: ['alt+shift+v']
+  - commands: ['move --workspace 8', 'focus --workspace 8']
+    bindings: ['alt+shift+x']
+  - commands: ['move --workspace 9', 'focus --workspace 9']
+    bindings: ['alt+shift+c']
 
   # Layout
   - commands: ["toggle-fullscreen"]
-    bindings: ["alt+f"]
+    bindings: ["alt+r"]
   - commands: ["toggle-floating"]
     bindings: ["alt+t"]
   - commands: ["close"]
