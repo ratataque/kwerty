@@ -18,62 +18,207 @@ yazi is a blazing-fast terminal file manager written in Rust with image preview,
 
 ```toml
 # yazi.toml
-[manager]
-sort_by = "natural"
-sort_sensitive = false
-sort_reverse = false
-sort_dir_first = true
-linemode = "size"
+[mgr]
 show_hidden = true
-show_symlink = true
 
-[preview]
-tab_size = 2
-max_width = 600
-max_height = 900
+[[plugin.prepend_fetchers]]
+id   = "git"
+name = "*"
+run  = "git"
+
+[[plugin.prepend_fetchers]]
+id   = "git"
+name = "*/"
+run  = "git"
 ```
 
 ## Keybindings
 
+### Navigation & Core Actions
+
 ```toml
 # keymap.toml
-[[manager.prepend_keymap]]
-on = ["<Enter>"]
-run = "open"
-desc = "Open the selected files"
+[[mgr.prepend_keymap]]
+on   = "l"
+run  = "plugin smart-enter"
+desc = "Enter the child directory, or open the file"
 
-[[manager.prepend_keymap]]
-on = ["l"]
-run = "open"
+[[mgr.prepend_keymap]]
+on   = "<C-j>"
+run  = "arrow 1"
+desc = "Move down"
 
-[[manager.prepend_keymap]]
-on = ["h"]
-run = "leave"
+[[mgr.prepend_keymap]]
+on   = "s"
+run  = "plugin fzf"
+desc = "Fuzzy search in current file"
+```
 
-[[manager.prepend_keymap]]
-on = ["g", "g"]
-run = "arrow -99999999"
+### Zoom & Preview
 
-[[manager.prepend_keymap]]
-on = ["G"]
-run = "arrow 99999999"
+```toml
+[[mgr.prepend_keymap]]
+on   = "i"
+run  = "plugin zoom 1"
+desc = "Zoom in hovered file"
+
+[[mgr.prepend_keymap]]
+on   = "-"
+run  = "plugin zoom -1"
+desc = "Zoom out hovered file"
+```
+
+### File Operations
+
+```toml
+[[mgr.prepend_keymap]]
+on   = [ "c", "m" ]
+run  = "plugin chmod"
+desc = "Chmod on selected files"
+
+[[mgr.prepend_keymap]]
+on = "y"
+run = [ 'shell -- for path in "$@"; do echo "file://$path"; done | wl-copy -t text/uri-list', "yank" ]
+
+[[mgr.prepend_keymap]]
+on = [ "S" ]
+run = '''shell 'fish -c "share \"$@\""' --confirm'''
+desc = "Share file"
+
+[[mgr.prepend_keymap]]
+on = "<C-i>"
+run = 'shell -- dragon-drop -x -i -T "$@"'
+desc = "Drag and drop"
+```
+
+### Directory Shortcuts
+
+```toml
+[[mgr.prepend_keymap]]
+on = [ ";", "w" ]
+run = "cd ~"
+desc = "Home directory"
+
+[[mgr.prepend_keymap]]
+on = [ ";", "d" ]
+run = "cd ~/Downloads"
+desc = "Downloads"
+
+[[mgr.prepend_keymap]]
+on = [ ";", "c" ]
+run = "cd ~/.config/"
+desc = "Config directory"
+
+[[mgr.prepend_keymap]]
+on = [ ";", "j" ]
+run = "cd ~/projets/"
+desc = "Projects"
+
+[[mgr.prepend_keymap]]
+on = [ ";", "u" ]
+run = "cd /run/media/ewan/"
+desc = "Media"
+```
+
+### Advanced Features
+
+```toml
+[[mgr.prepend_keymap]]
+on  = "M"
+run = "plugin mount"
+
+[[mgr.prepend_keymap]]
+on   = "F"
+run  = "plugin smart-filter"
+desc = "Smart filter"
+
+[[mgr.prepend_keymap]]
+on   = "<C-s>"
+run  = 'shell --block --confirm "sesh connect \"$0\" && exit"'
+desc = "Quit and connect to sesh session"
+
+[[mgr.prepend_keymap]]
+on = "<C-p>"
+run = [ "sort mtime --reverse", "arrow top" ]
+desc = "Go to newest folder"
+
+[[mgr.prepend_keymap]]
+on = "<C-n>"
+run  = [ "sort mtime --reverse=no", "arrow bot" ]
+desc = "Jump to newest file"
 ```
 
 ## Theme
 
 ```toml
-# theme.toml - Catppuccin Mocha
+# theme.toml - Custom Cyan/Green Color Scheme
 [manager]
-cwd = { fg = "#89b4fa" }
+cwd = { fg = "#00d1e9" }
+
+# Tab
+tab_active   = { reversed = true }
+tab_inactive = {}
+tab_width    = 1
+
+# Count indicators
+count_copied   = { fg = "#222327", bg = "#6ae073" }
+count_cut      = { fg = "#222327", bg = "#ff6e64" }
+count_selected = { fg = "#222327", bg = "#ffde57" }
+
+# Border
+border_symbol = "│"
+border_style  = { fg = "#63E1B2" }
+
+[tabs]
+active   = { fg = "#222327", bg = "#63E1B2", bold = true }
+inactive = { fg = "#63E1B2", bg = "#393939" }
+
+# Separator
+sep_inner = { open = "", close = "" }
+sep_outer = { open = "", close = "" }
+
+[mode]
+normal_main = { fg = "#222327", bg = "#63E1B2", bold = true }
+normal_alt  = { fg = "#63E1B2", bg = "#393939" }
+select_main = { fg = "#222327", bg = "#6ae073", bold = true }
+select_alt  = { fg = "#6ae073", bg = "#393939" }
+unset_main  = { fg = "#222327", bg = "#f2cdcd", bold = true }
+unset_alt   = { fg = "#f2cdcd", bg = "#393939" }
 
 [status]
-separator_open = ""
+separator_open  = ""
 separator_close = ""
-separator_style = { fg = "#45475a", bg = "#1e1e2e" }
-mode_normal = { fg = "#1e1e2e", bg = "#a6e3a1", bold = true }
-mode_select = { fg = "#1e1e2e", bg = "#cba6f7", bold = true }
 ```
+
+## Plugins
+
+```lua
+-- init.lua
+require("full-border"):setup()
+require("git"):setup()
+```
+
+Active plugins include:
+- **full-border**: Enhanced border styling
+- **git**: Git status integration in file listings
+- **smart-enter**: Intelligent directory/file navigation
+- **zoom**: Image and file preview zooming
+- **smart-filter**: Advanced file filtering
+- **mount**: Device mounting capabilities
+- **chmod**: Quick file permission management
+- **fzf**: Fuzzy file searching
 
 ## File Preview
 
 yazi supports inline image preview in kitty terminal via the kitty graphics protocol. It also previews code with syntax highlighting, PDFs, archives, and videos.
+
+## Integration
+
+### Sesh Integration
+Press `<C-s>` to quit yazi and connect to a sesh session directly.
+
+### Drag & Drop
+Use `<C-i>` to initiate drag-and-drop with dragon-drop for easy file transfers.
+
+### Wayland Clipboard
+File paths are copied as `file://` URIs to the Wayland clipboard using `wl-copy`.
