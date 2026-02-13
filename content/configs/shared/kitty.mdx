@@ -48,22 +48,52 @@ map ctrl+shift+r no_op
 ## ratataque's Configuration
 
 ```conf
+# Dynamic color changes via current.conf
+include ~/.config/kitty/current.conf
+allow_remote_control yes
+
 # Font
-font_family      JetBrains Mono
-bold_font        JetBrains Mono Bold
-italic_font      JetBrains Mono Italic
-font_size        12.0
+font_family      JetBrains Mono Nerd Font
+font_size        9
+bold_font        auto
+italic_font      auto
+bold_italic_font auto
 
-# Window
-window_padding_width  8
-hide_window_decorations yes
-background_opacity    0.95
+# Shell
+shell fish
 
-# Performance
-repaint_delay    6
-input_delay      1
-sync_to_monitor  yes
+# URLs
+url_color        #0087bd
+url_style        dotted
+
+# Window behavior
+confirm_os_window_close 0
+term xterm-kitty
+extended-keys    always
+
+# Clipboard control
+clipboard_control write-clipboard write-primary write-clipboard-on-select
+
+# Cursor - THE CURSOR TRAIL IS AMAZING! 🌟
+# Creates a smooth trailing effect that makes cursor movement visually gorgeous
+cursor_shape     block
+cursor_trail     1
+
+# Mouse behavior
+mouse_hide_wait  2.0
+
+# Font size keybindings
+map ctrl+plus         change_font_size all +1
+map ctrl+equal        change_font_size all +1
+map ctrl+kp_add       change_font_size all +1
+map ctrl+minus        change_font_size all -1
+map ctrl+underscore   change_font_size all -1
+map ctrl+kp_subtract  change_font_size all -1
 ```
+
+### ✨ Highlight: Cursor Trail
+
+The `cursor_trail 1` setting creates a beautiful smooth trailing effect when moving the cursor. This visual enhancement makes it much easier to track cursor movements, especially during fast navigation or screen transitions. It's one of kitty's most underrated features that significantly improves the terminal experience!
 
 ## Platform Notes
 
